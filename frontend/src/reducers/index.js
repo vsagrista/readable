@@ -6,28 +6,42 @@ import {
 } from '../actions'
 
 const initialPostsState = {
-    id: {
-        id: null,
-        timestamp: null,
-        title: null,
-        body: null,
-        author: null,
-        category: null,
-        voteScore: null,
-        deleted: null
+    byId: {
+        "aaaa": {
+            id: "aaaa",
+            timestamp: null,
+            title: "Example",
+            body: null,
+            author: null,
+            category: null,
+            voteScore: null,
+            deleted: null
+        },
+        "bbbb": {
+            id: "bbbb",
+            timestamp: null,
+            title: "Another example",
+            body: null,
+            author: null,
+            category: null,
+            voteScore: null,
+            deleted: null
+        }
     },
-    allIds: []
+    allIds: ["aaaa", "bbbb"]
 }
 
 const comments = {
-    id: {
-        id: null,
-        parentId: null,
-        timestamp: null,
-        body: null,
-        author: null,
-        voteScore: null,
-        parentDeleted: false
+    byId: {
+        id: {
+            id: null,
+            parentId: null,
+            timestamp: null,
+            body: null,
+            author: null,
+            voteScore: null,
+            parentDeleted: false
+        }
     },
     allIds: []
 }
