@@ -22,7 +22,6 @@ class CreatePost extends Component {
 
             }
         }
-        console.log(this.state);
     }
 
     handleInputChange = (newPostInput) => {
@@ -63,9 +62,9 @@ class CreatePost extends Component {
     }
 }
 
-function mapStateToProps(state, props) {
+function mapStateToProps( { posts }) {
     return {
-        byId: state.byId, allIds: state.allIds
+        byId: posts.byId, allIds: posts.allIds
     }
 }
 

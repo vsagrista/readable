@@ -2,6 +2,7 @@ import {
     CREATE_POST,
     ADD_COMMENT,
 } from '../actions';
+import { combineReducers } from 'redux';
 
 const initialPostsState = {
     byId: {},
@@ -24,7 +25,7 @@ const initialCommentsState = {
     allIds: []
 }
 
-function post(state = initialPostsState, action) {
+function posts(state = initialPostsState, action) {
     const { id, timestamp, title, body, author, category, voteScore, deleted } = action;
     switch (action.type) {
         case CREATE_POST:
@@ -35,11 +36,32 @@ function post(state = initialPostsState, action) {
                     [action.id]: action
                 },
                 allIds: [...state.allIds, action.id]
-    }
+            }
         default:
-    return state
-}
-    
+            return state
+    }
 }
 
-export default post;
+function comments(state = initialCommentsState, action) {
+    const { id, parentId, timestamp, body, author, voteScore, parentDeleted } = action;
+    switch (action.type) {
+        case ADD_COMMENT:
+            delete action.type;
+            return {
+                byId: {
+                    ...state.byId,
+                    [action.id]: action
+                },
+                allIds: [...state.allIds, action.id]
+            }
+        default:
+            return state
+    }
+}
+
+let appReducers = combineReducers({
+   posts,
+   comments 
+});
+
+export default appReducers;
