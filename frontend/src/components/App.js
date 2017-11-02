@@ -6,9 +6,13 @@ import ListTemplate from './ListTemplate';
 import Category from './Category';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
+import APIMethods from '../helpers/APIMethods'
 
 
 class App extends Component {
+    componentDidMount() {
+
+    }
     render() {
         return (
             <div>
