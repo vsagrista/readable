@@ -58,7 +58,7 @@ class ListTemplate extends Component {
                     </li>
                     { link ? 
                     <div>
-                        <Link to={'/Post/' + post.id }>View</Link> 
+                        <Link to={'/post/' + post.id }>View</Link> 
                         {console.log('link to: ', '/posts/' + post.id)}
                     </div>
                     : ''}

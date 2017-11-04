@@ -9,7 +9,9 @@ import Category from './Category';
 import SinglePost from './SinglePost';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-import * as APIMethods from '../helpers/APIMethods'
+import * as APIMethods from '../helpers/APIMethods';
+import * as HerperMethods from '../helpers/HelperMethods';
+
 var _ = require('lodash');
 
 
@@ -52,9 +54,11 @@ class App extends Component {
                             <h1>Categories</h1>
                             <ul className='list-group'>
                                 {this.state.categories.map(category =>
-                                    <Link key={category.name} to={'/Category/' + category.name }>
+                                    <Link key={category.name} to={'/category/' + category.name }>
                                         <li className='list-group-item justify-content-between' key={category.name}>{category.name.toUpperCase()} 
-                                            <span class="badge badge-default badge-pill">1</span>
+                                            <span className="badge badge-default badge-pill">
+                                                { HerperMethods.countPostsByCategory(this.props.allIds, this.props.byId, category.name) }
+                                            </span>
                                         </li>
                                     </Link>
                                 )}
@@ -64,24 +68,28 @@ class App extends Component {
                             <h1>All Posts</h1>
                             <ul className='list-group'>
                                 {this.props.allIds.map(id =>
-                                    <Link to={'/Post/' + this.props.byId[id].id }>
-                                        <li className='list-group-item justify-content-between'>{this.props.byId[id].title}</li>
+                                    <Link to={'/post/' + this.props.byId[id].id }>
+                                        <li className='list-group-item text-left'>{this.props.byId[id].title}
+                                            <span className="badge badge-default badge-pill">
+                                                {this.props.byId[id].voteScore}
+                                            </span>
+                                        </li>
                                     </Link>
                                 )}
                             </ul>
 
                         </div>
-                        <Link to='/CreatePost'>Create Post</Link>
+                        <Link to='/createpost'>Create Post</Link>
                     </div>
                 )} />
                 <div>
-                    <Route exact path='/Category/:name' render={(props) => (
+                    <Route exact path='/category/:name' render={(props) => (
                         <Category name={props.match.params.name} />
                     )} />
-                    <Route exact path='/CreatePost' render={() => (
+                    <Route exact path='/createpost' render={() => (
                         <CreatePost />
                     )} />
-                    <Route exact path="/Post/:id" render={(props) => (
+                    <Route exact path="/post/:id" render={(props) => (
                         <SinglePost id={props.match.params.id} />
                     )} />
 
