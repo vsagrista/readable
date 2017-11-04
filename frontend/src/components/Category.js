@@ -9,12 +9,11 @@ class Category extends Component {
         return (
             <div>
                 <h1>{this.props.name} Category</h1>  
-                <ListTemplate type='allPosts'/>     
+                <ListTemplate type='allPostsByCategory' category={this.props.name}/>     
             </div>
         );
     }
 }
-
 
 function mapStateToProps({ posts, comments }) {
     return {

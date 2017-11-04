@@ -37,7 +37,6 @@ class App extends Component {
             ))
         }
         )
-        console.log(this.props)
     }
 
     sortPostsBy = (posts, option) => {
@@ -80,10 +79,6 @@ class App extends Component {
                     <Route exact path='/CreatePost' render={() => (
                         <CreatePost />
                     )} />
-                    {/*<Route exact path='/posts/:id' render={(null, match) => (
-                            <SinglePost params={match.params} />
-                    )} />*/}
-
                     <Route exact path="/Post/:id" render={(props) => (
                         <SinglePost id={props.match.params.id} />
                     )} />

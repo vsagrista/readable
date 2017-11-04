@@ -19,6 +19,12 @@ class ListTemplate extends Component {
                 return this.props.allPostsId.map(id => (
                         this.postTemplate(this.props.postsById[id], true)
                     ));
+            case 'allPostsByCategory':
+                return this.props.allPostsId.map(id => (
+                        this.props.postsById[id].category === this.props.category ?
+                            this.postTemplate(this.props.postsById[id], true) :
+                            null
+                    ));
             case 'allComments':
                 return this.props.allCommentsById.map(id => (
                         this.commentTemplate(this.props.commentsById[id])
