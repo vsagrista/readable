@@ -50,20 +50,22 @@ class App extends Component {
                     <div className="App">
                         <div className='root-categories'>
                             <h1>Categories</h1>
-                            <ul>
+                            <ul className='list-group'>
                                 {this.state.categories.map(category =>
                                     <Link key={category.name} to={'/Category/' + category.name }>
-                                        <li key={category.name}>{category.name}</li>
+                                        <li className='list-group-item justify-content-between' key={category.name}>{category.name.toUpperCase()} 
+                                            <span class="badge badge-default badge-pill">1</span>
+                                        </li>
                                     </Link>
                                 )}
                             </ul>
                         </div>
                         <div className='root-posts'>
-                            <h1>posts</h1>
-                            <ul>
+                            <h1>All Posts</h1>
+                            <ul className='list-group'>
                                 {this.props.allIds.map(id =>
                                     <Link to={'/Post/' + this.props.byId[id].id }>
-                                        <li>{this.props.byId[id].title}</li>
+                                        <li className='list-group-item justify-content-between'>{this.props.byId[id].title}</li>
                                     </Link>
                                 )}
                             </ul>
