@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
-import {
-    createPost
-} from '../actions';
+import { Link } from 'react-router-dom';
+var moment = require('moment');
 
 class ListTemplate extends Component {
 
@@ -12,34 +11,87 @@ class ListTemplate extends Component {
         console.log(this.props);
     }
 
+    listContent = (type) => {
+        switch (type) {
+            case 'post': // single post view
+                return this.postTemplate(this.props.postsById[this.props.singlePostId]);
+            case 'allPosts': // Root view
+                return this.props.allPostsId.map(id => (
+                        this.postTemplate(this.props.postsById[id], true)
+                    ));
+            case 'allComments':
+                return this.props.allCommentsById.map(id => (
+                        this.commentTemplate(this.props.commentsById[id])
+                    ));    
+            default:
+                return <div></div>
+        }
+    }
+
+    postTemplate = (post, link) => {
+        return (
+            <div>
+                <ul>
+                    <li key={post.title}>
+                        Title: {post.title}
+                    </li>
+                    <li key={post.body}>
+                        Body: {post.body}
+                    </li>
+                    <li key={post.author}>
+                        Author: {post.author}
+                    </li>
+                    <li key={post.voteScore}>
+                        Vote Score: {post.voteScore}
+                    </li>
+                    <li key={post.category}>
+                        Category: {post.category}
+                    </li>
+                    <li key={post.timestamp}>
+                        Date: {moment(post.timestamp).format("DD/MM/YYYY")}
+                    </li>
+                    { link ? 
+                    <div>
+                        <Link to={'/Post/' + post.id }>View</Link> 
+                        {console.log('link to: ', '/posts/' + post.id)}
+                    </div>
+                    : ''}
+                </ul>
+                
+            </div>
+        )
+    }
+
+    commentTemplate = (comment) => {
+        return (
+            <div>
+                <ul>
+                    <li key={comment.body}>
+                        Body: {comment.body}
+                    </li>
+                    <li key={comment.author}>
+                        Author: {comment.author}
+                    </li>
+                    <li key={comment.voteScore}>
+                        Vote Score: {comment.voteScore}
+                    </li>
+                    <li key={comment.category}>
+                        Category: {comment.category}
+                    </li>
+                    <li key={comment.timestamp}>
+                        Time: {(comment.timestamp).toString()}
+                    </li>
+                </ul>
+            </div>
+        )
+    }
+
     render() {
         console.log(this.props);
         return (
             <div>
                 Hello List
-                {this.props.allIds.map(id => (
-                    <ul>
-                        <li key={this.props.byId[id].title}>
-                            Title: {this.props.byId[id].title}
-                        </li>
-                        <li key={this.props.byId[id].body}>
-                            Body: {this.props.byId[id].body}
-                        </li>
-                        <li key={this.props.byId[id].author}>
-                            Author: {this.props.byId[id].author}
-                        </li>
-                        <li key={this.props.byId[id].voteScore}>
-                            Vote Score: {this.props.byId[id].voteScore}
-                        </li>
-                        <li key={this.props.byId[id].category}>
-                            Category: {this.props.byId[id].category}
-                        </li>
-                        <li key={this.props.byId[id].timestamp}>
-                            Time: {this.props.byId[id].category}
-                        </li>
-                    </ul>
-                )
-                )}
+                {this.listContent(this.props.type)}
             </div>
         )
     }
@@ -48,7 +100,8 @@ class ListTemplate extends Component {
 
 function mapStateToProps({ posts, comments }) {
     return {
-        byId: posts.byId, allIds: posts.allIds
+        postsById: posts.byId, allPostsId: posts.allIds,
+        commentsById: comments.byId, allCommentsById: comments.allIds
     }
 }
 

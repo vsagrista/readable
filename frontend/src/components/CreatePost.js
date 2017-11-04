@@ -15,7 +15,7 @@ class CreatePost extends Component {
         this.state = {
             newPost: {
                 id: "",
-                timestamp: null,
+                timestamp: Date.now(),
                 title: "",
                 body: "",
                 author: "",
@@ -70,7 +70,11 @@ class CreatePost extends Component {
                             onChange={e => this.handleInputChange({ author: e.target.value })}
                         />
                         <p>Category</p>
-                        <select  value={this.props.Selected}>
+                        <select  value={this.state.newPost.category}
+                                onChange={e => this.handleInputChange({ category: e.target.value })}
+                                required
+                        >
+                                <option disabled value="">-- Category --</option>
                             {["Sport", "Politics", "Tech"].map(category => (
                                 <option key={category} value={category}
                                 >{category}</option>

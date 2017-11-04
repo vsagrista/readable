@@ -26,7 +26,7 @@ const initialCommentsState = {
 }
 
 function posts(state = initialPostsState, action) {
-    const { id, timestamp, title, body, author, category, voteScore, deleted } = action;
+    // const { id, timestamp, title, body, author, category, voteScore, deleted } = action;
     switch (action.type) {
         case CREATE_POST:
             delete action.type;
@@ -43,7 +43,7 @@ function posts(state = initialPostsState, action) {
 }
 
 function comments(state = initialCommentsState, action) {
-    const { id, parentId, timestamp, body, author, voteScore, parentDeleted } = action;
+    // const { id, parentId, timestamp, body, author, voteScore, parentDeleted } = action;
     switch (action.type) {
         case ADD_COMMENT:
             delete action.type;
