@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
 import {
-    createPost
+    createPost,
+    saveSortedIds
 } from '../actions';
 import CreatePost from './CreatePost';
 import Category from './Category';
@@ -39,16 +40,15 @@ class App extends Component {
             ))
         }
         ).then(() => {
-            this.sortItemsBy('voteScore')
+            this.props.saveSortedPostsIds({
+                allIds: this.sortItemsBy('timestamp'),  
+                sortedBy: 'timestamp'}
+            );
         });
     }
 
     sortItemsBy(option) {
-        console.log("Sorting by: ", option)
-        this.setState({
-            sortedPostsIds: HelperMethods.sortIdsBy(this.props.byId, option),
-            sortedBy: option
-        })
+        return  HelperMethods.sortIdsBy(this.props.byId, option)
     }
 
     render() {
@@ -73,7 +73,7 @@ class App extends Component {
                         <div className='root-posts'>
                             <h1>All Posts</h1>
                             <ul className='list-group'>
-                                {this.state.sortedPostsIds.map(id =>
+                                {this.props.allIds.map(id =>
                                     <Link to={'/post/' + this.props.byId[id].id}>
                                         <li className='list-group-item text-left'>{this.props.byId[id].title}
                                             <span className="badge badge-default badge-pill">
@@ -84,11 +84,13 @@ class App extends Component {
                                 )}
                             </ul>
                             <button onClick={() => {
-                                let option = this.state.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
-                                this.sortItemsBy(option)
+                                console.log("this.props.sortedBy: ", this.props.sortedBy)
+                                let option = this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
+
+                                this.props.saveSortedPostsIds({allIds: this.sortItemsBy(option), sortedBy: option});
                                 }
                             }>
-                                Sorted by: {this.state.sortedBy}
+                                Sort by: {this.props.sortedBy}
                             </button>
 
                         </div>
@@ -113,15 +115,18 @@ class App extends Component {
 }
 
 
-function mapStateToProps({ posts, comments }) {
+function mapStateToProps({ posts }) {
     return {
-        byId: posts.byId, allIds: posts.allIds
+        byId: posts.byId, 
+        allIds: posts.allIds, 
+        sortedBy: posts.sortedBy
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        createPost: (data) => dispatch(createPost(data))
+        createPost: (data) => dispatch(createPost(data)),
+        saveSortedPostsIds: (data) => dispatch(saveSortedIds(data))
     }
 }
 

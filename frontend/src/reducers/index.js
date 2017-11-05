@@ -1,14 +1,15 @@
 import {
     CREATE_POST,
     ADD_COMMENT,
-    SORT_BY_VOTE_OR_DATE
+    SAVE_SORTED_IDS
 } from '../actions';
 import { combineReducers } from 'redux';
 
 const initialPostsState = {
     byId: {},
     allIds: [],
-    isFetching: false
+    isFetching: false,
+    sortedBy: 'voteScore'
 }
 
 const initialCommentsState = {
@@ -38,11 +39,14 @@ function posts(state = initialPostsState, action) {
                 },
                 allIds: [...state.allIds, action.id]
             }
-        case SORT_BY_VOTE_OR_DATE:
+        case SAVE_SORTED_IDS:
             delete action.type;
+            console.log("Action: ", action)
             return {
-                allIds: [...state.allIds, action.allIds]
-            }
+                ...state,
+                allIds: action.allIds,
+                sortedBy: action.sortedBy     
+            };
         default:
             return state
     }
@@ -66,8 +70,8 @@ function comments(state = initialCommentsState, action) {
 }
 
 let appReducers = combineReducers({
-   posts,
-   comments 
+    posts,
+    comments
 });
 
 export default appReducers;

@@ -19,7 +19,6 @@ export const sortIdsBy = (items, option) => {
     let itemsArray = [];
     // make an array of the object model from the reducer to better iterate 
     Object.keys(items).map((key => itemsArray.push(items[key])));
-    _.sortBy(itemsArray, option).map(item => sortedIds.push(item.id))
-    console.log(sortedIds);
+    _.sortBy(itemsArray, option).map(item => sortedIds.push(item.id));
     return sortedIds.reverse();
 }

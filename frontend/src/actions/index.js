@@ -1,6 +1,6 @@
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const CREATE_POST = 'CREATE_POST';
-export const SORT_BY_VOTE_OR_DATE = 'SORT_BY_VOTE_OR_DATE';
+export const SAVE_SORTED_IDS = 'SAVE_SORTED_IDS';
 
 
 export function addComment({ id, parentId, timestamp, body, author, voteScore, parentDeleted }) {
@@ -30,10 +30,11 @@ export function createPost({ id, timestamp, title, body, author, category, voteS
     }
 }
 
-export function sortByVoteOrDate({ allIds }) {
+export function saveSortedIds({ allIds, sortedBy }) {
     return {
-        type: SORT_BY_VOTE_OR_DATE,
-        allIds, 
+        type: SAVE_SORTED_IDS,
+        allIds,
+        sortedBy
     }
 }
 
