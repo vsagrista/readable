@@ -1,6 +1,7 @@
 import {
     CREATE_POST,
     ADD_COMMENT,
+    SORT_BY_VOTE_OR_DATE
 } from '../actions';
 import { combineReducers } from 'redux';
 
@@ -36,6 +37,11 @@ function posts(state = initialPostsState, action) {
                     [action.id]: action
                 },
                 allIds: [...state.allIds, action.id]
+            }
+        case SORT_BY_VOTE_OR_DATE:
+            delete action.type;
+            return {
+                allIds: [...state.allIds, action.allIds]
             }
         default:
             return state

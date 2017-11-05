@@ -17,18 +17,18 @@ class ListTemplate extends Component {
                 return this.postTemplate(this.props.postsById[this.props.singlePostId]);
             case 'allPosts': // Root view
                 return this.props.allPostsId.map(id => (
-                        this.postTemplate(this.props.postsById[id], true)
-                    ));
+                    this.postTemplate(this.props.postsById[id], true)
+                ));
             case 'allPostsByCategory':
                 return this.props.allPostsId.map(id => (
-                        this.props.postsById[id].category === this.props.category ?
-                            this.postTemplate(this.props.postsById[id], true) :
-                            null
-                    ));
+                    this.props.postsById[id].category === this.props.category ?
+                        this.postTemplate(this.props.postsById[id], true) :
+                        null
+                ));
             case 'allComments':
                 return this.props.allCommentsById.map(id => (
-                        this.commentTemplate(this.props.commentsById[id])
-                    ));    
+                    this.commentTemplate(this.props.commentsById[id])
+                ));
             default:
                 return <div></div>
         }
@@ -56,14 +56,14 @@ class ListTemplate extends Component {
                     <li key={post.timestamp}>
                         Date: {moment(post.timestamp).format("DD/MM/YYYY")}
                     </li>
-                    { link ? 
-                    <div>
-                        <Link to={'/post/' + post.id }>View</Link> 
-                        {console.log('link to: ', '/posts/' + post.id)}
-                    </div>
-                    : ''}
+                    {link ?
+                        <div>
+                            <Link to={'/post/' + post.id}>View</Link>
+                            {console.log('link to: ', '/posts/' + post.id)}
+                        </div>
+                        : ''}
                 </ul>
-                
+
             </div>
         )
     }
@@ -96,7 +96,7 @@ class ListTemplate extends Component {
         console.log(this.props);
         return (
             <div>
-                Hello List
+                Hello From list component
                 {this.listContent(this.props.type)}
             </div>
         )

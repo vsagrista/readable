@@ -10,9 +10,7 @@ import SinglePost from './SinglePost';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import * as APIMethods from '../helpers/APIMethods';
-import * as HerperMethods from '../helpers/HelperMethods';
-
-var _ = require('lodash');
+import * as HelperMethods from '../helpers/HelperMethods';
 
 
 class App extends Component {
@@ -20,7 +18,9 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            categories: []
+            categories: [],
+            sortedPostsIds: [],
+            sortedBy: ''
         }
 
     }
@@ -35,14 +35,20 @@ class App extends Component {
 
         APIMethods.getPosts().then((data) => {
             data.map(post => (
-                 this.props.createPost(post)
+                this.props.createPost(post)
             ))
         }
-        )
+        ).then(() => {
+            this.sortItemsBy('voteScore')
+        });
     }
 
-    sortPostsBy = (posts, option) => {
-        return _.sortBy(posts, option).reverse()
+    sortItemsBy(option) {
+        console.log("Sorting by: ", option)
+        this.setState({
+            sortedPostsIds: HelperMethods.sortIdsBy(this.props.byId, option),
+            sortedBy: option
+        })
     }
 
     render() {
@@ -54,10 +60,10 @@ class App extends Component {
                             <h1>Categories</h1>
                             <ul className='list-group'>
                                 {this.state.categories.map(category =>
-                                    <Link key={category.name} to={'/category/' + category.name }>
-                                        <li className='list-group-item justify-content-between' key={category.name}>{category.name.toUpperCase()} 
+                                    <Link key={category.name} to={'/category/' + category.name}>
+                                        <li className='list-group-item justify-content-between' key={category.name}>{category.name.toUpperCase()}
                                             <span className="badge badge-default badge-pill">
-                                                { HerperMethods.countPostsByCategory(this.props.allIds, this.props.byId, category.name) }
+                                                {HelperMethods.countPostsByCategory(this.props.allIds, this.props.byId, category.name)}
                                             </span>
                                         </li>
                                     </Link>
@@ -67,8 +73,8 @@ class App extends Component {
                         <div className='root-posts'>
                             <h1>All Posts</h1>
                             <ul className='list-group'>
-                                {this.props.allIds.map(id =>
-                                    <Link to={'/post/' + this.props.byId[id].id }>
+                                {this.state.sortedPostsIds.map(id =>
+                                    <Link to={'/post/' + this.props.byId[id].id}>
                                         <li className='list-group-item text-left'>{this.props.byId[id].title}
                                             <span className="badge badge-default badge-pill">
                                                 {this.props.byId[id].voteScore}
@@ -77,6 +83,13 @@ class App extends Component {
                                     </Link>
                                 )}
                             </ul>
+                            <button onClick={() => {
+                                let option = this.state.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
+                                this.sortItemsBy(option)
+                                }
+                            }>
+                                Sorted by: {this.state.sortedBy}
+                            </button>
 
                         </div>
                         <Link to='/createpost'>Create Post</Link>
