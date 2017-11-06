@@ -1,6 +1,14 @@
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const CREATE_POST = 'CREATE_POST';
 export const SAVE_SORTED_IDS = 'SAVE_SORTED_IDS';
+export const SAVE_CATEGORY = 'SAVE_CATEGORY';
+
+export function saveCategories({ names }) {
+    return {
+        type: SAVE_CATEGORY,
+        names,
+    } 
+}
 
 
 export function addComment({ id, parentId, timestamp, body, author, voteScore, parentDeleted }) {

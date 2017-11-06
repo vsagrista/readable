@@ -3,11 +3,13 @@ import '../App.css';
 import { connect } from 'react-redux';
 import {
     createPost,
-    saveSortedIds
+    saveSortedIds,
+    saveCategories
 } from '../actions';
 import CreatePost from './CreatePost';
 import Category from './Category';
 import SinglePost from './SinglePost';
+import ListTemplate from './ListTemplate';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import * as APIMethods from '../helpers/APIMethods';
@@ -16,30 +18,21 @@ import * as HelperMethods from '../helpers/HelperMethods';
 
 class App extends Component {
 
-    constructor() {
-        super();
-        this.state = {
-            categories: [],
-            sortedPostsIds: [],
-            sortedBy: ''
-        }
-
-    }
 
     componentDidMount() {
+        
         APIMethods.getCategories().then((data) => {
-            this.setState({
-                categories: data.categories
-            })
-        }
-        )
+            let categories = [];
+            data.categories.map((category) =>  categories.push(category.name))
+            this.props.saveCategories({names: categories})
+        });
+        console.log(this.props)
 
         APIMethods.getPosts().then((data) => {
             data.map(post => (
                 this.props.createPost(post)
             ))
-        }
-        ).then(() => {
+        }).then(() => {
             this.props.saveSortedPostsIds({
                 allIds: this.sortItemsBy('timestamp'),  
                 sortedBy: 'timestamp'}
@@ -59,11 +52,11 @@ class App extends Component {
                         <div className='root-categories'>
                             <h1>Categories</h1>
                             <ul className='list-group'>
-                                {this.state.categories.map(category =>
-                                    <Link key={category.name} to={'/category/' + category.name}>
-                                        <li className='list-group-item justify-content-between' key={category.name}>{category.name.toUpperCase()}
+                                {this.props.categories.map(category =>
+                                    <Link key={category.name} to={'/category/' + category}>
+                                        <li className='list-group-item justify-content-between' key={category}>{category.toUpperCase()}
                                             <span className="badge badge-default badge-pill">
-                                                {HelperMethods.countPostsByCategory(this.props.allIds, this.props.byId, category.name)}
+                                                {HelperMethods.countPostsByCategory(this.props.allIds, this.props.byId, category)}
                                             </span>
                                         </li>
                                     </Link>
@@ -84,9 +77,7 @@ class App extends Component {
                                 )}
                             </ul>
                             <button onClick={() => {
-                                console.log("this.props.sortedBy: ", this.props.sortedBy)
                                 let option = this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
-
                                 this.props.saveSortedPostsIds({allIds: this.sortItemsBy(option), sortedBy: option});
                                 }
                             }>
@@ -115,8 +106,9 @@ class App extends Component {
 }
 
 
-function mapStateToProps({ posts }) {
+function mapStateToProps({ categories, posts }) {
     return {
+        categories: categories.names,
         byId: posts.byId, 
         allIds: posts.allIds, 
         sortedBy: posts.sortedBy
@@ -126,7 +118,8 @@ function mapStateToProps({ posts }) {
 function mapDispatchToProps(dispatch) {
     return {
         createPost: (data) => dispatch(createPost(data)),
-        saveSortedPostsIds: (data) => dispatch(saveSortedIds(data))
+        saveSortedPostsIds: (data) => dispatch(saveSortedIds(data)),
+        saveCategories: (data) => dispatch(saveCategories(data))
     }
 }
 
