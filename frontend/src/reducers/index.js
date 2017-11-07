@@ -36,7 +36,6 @@ function categories(state = initialCategoriesState, action) {
     switch (action.type) {
         case SAVE_CATEGORY:
             delete action.type;
-            console.log("Action: ", action.names);
             return {
                 ...state, 
                     names: action.names    

@@ -11,7 +11,9 @@ class SinglePost extends Component {
         return (
             <div>
                 Single Post
-                <ListTemplate type='post' singlePostId={this.props.id}/>
+                <ul>
+                    <ListTemplate type='post' singlePostId={this.props.id} />
+                </ul>
             </div>
         )
     }

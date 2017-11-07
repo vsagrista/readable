@@ -7,18 +7,13 @@ var moment = require('moment');
 
 class ListTemplate extends Component {
 
-    constructor() {
-        super();
-        console.log(this.props);
-    }
-
     listContent = (type) => {
         switch (type) {
             case 'categories':
                 return this.renderCategories();
             case 'post': // single post view
                 return this.postTemplate(this.props.postsById[this.props.singlePostId]);
-            case 'allPosts': // Root view
+            case 'posts': // Root view
                 return this.renderPosts();
             case 'allPostsByCategory':
                 return this.renderPostsByCategory();
@@ -52,41 +47,51 @@ class ListTemplate extends Component {
     }
 
     renderPosts = () => {
-        this.props.allPostsId.map(id => (
-            this.postTemplate(this.props.postsById[id], true)
-        ));
+        return (
+            this.props.allPostsId.map(id =>
+                <Link to={'/post/' + this.props.postsById[id].id}>
+                    <li className='list-group-item text-left'>{this.props.postsById[id].title}
+                        <span className="badge badge-default badge-pill">
+                            {this.props.postsById[id].voteScore}
+                        </span>
+                    </li>
+                </Link>
+            )
+        )
     }
 
-    postTemplate = (post, link) => {
+
+
+    postTemplate = (post, isNotSingle) => {
         return (
             <div>
-                <ul>
-                    <li key={post.title}>
-                        Title: {post.title}
-                    </li>
-                    <li key={post.body}>
-                        Body: {post.body}
-                    </li>
-                    <li key={post.author}>
-                        Author: {post.author}
-                    </li>
-                    <li key={post.voteScore}>
-                        Vote Score: {post.voteScore}
-                    </li>
-                    <li key={post.category}>
-                        Category: {post.category}
-                    </li>
-                    <li key={post.timestamp}>
-                        Date: {moment(post.timestamp).format("DD/MM/YYYY")}
-                    </li>
-                    {link ?
-                        <div>
-                            <Link to={'/post/' + post.id}>View</Link>
-                            {console.log('link to: ', '/posts/' + post.id)}
-                        </div>
-                        : ''}
-                </ul>
-
+                <li key={post.title}>
+                    Title: {post.title}
+                </li>
+                <li key={post.body}>
+                    Body: {post.body}
+                </li>
+                <li key={post.author}>
+                    Author: {post.author}
+                </li>
+                <li key={post.voteScore}>
+                    Vote Score: {post.voteScore}
+                </li>
+                <li key={post.category}>
+                    Category: {post.category}
+                </li>
+                <li key={post.timestamp}>
+                    Date: {moment(post.timestamp).format("DD/MM/YYYY")}
+                </li>
+                {isNotSingle ?
+                    <div>
+                        <Link to={'/post/' + post.id}>
+                            <li className='list-group-item text-left'>
+                                view
+                            </li>
+                        </Link>
+                    </div>
+                    : ''}
             </div>
         )
     }
@@ -122,7 +127,6 @@ class ListTemplate extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <div>
                 Hello From list component
@@ -138,6 +142,7 @@ function mapStateToProps({ posts, comments, categories }) {
         categories: categories.names,
         postsById: posts.byId, allPostsId: posts.allIds,
         commentsById: comments.byId, allCommentsById: comments.allIds,
+        postsSortedBy: posts.sortedBy
     }
 }
 

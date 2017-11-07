@@ -18,15 +18,12 @@ import * as HelperMethods from '../helpers/HelperMethods';
 
 class App extends Component {
 
-
-    componentDidMount() {
-        
+    componentDidMount() {   
         APIMethods.getCategories().then((data) => {
             let categories = [];
             data.categories.map((category) =>  categories.push(category.name))
             this.props.saveCategories({names: categories})
         });
-        console.log(this.props)
 
         APIMethods.getPosts().then((data) => {
             data.map(post => (
@@ -58,7 +55,7 @@ class App extends Component {
                         <div className='root-posts'>
                             <h1>All Posts</h1>
                             <ul className='list-group'>
-                                {this.props.allIds.map(id =>
+                                {/*{this.props.allIds.map(id =>
                                     <Link to={'/post/' + this.props.byId[id].id}>
                                         <li className='list-group-item text-left'>{this.props.byId[id].title}
                                             <span className="badge badge-default badge-pill">
@@ -66,7 +63,8 @@ class App extends Component {
                                             </span>
                                         </li>
                                     </Link>
-                                )}
+                                )}*/}
+                                <ListTemplate type='posts'></ListTemplate>
                             </ul>
                             <button onClick={() => {
                                 let option = this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
