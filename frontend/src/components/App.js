@@ -52,15 +52,7 @@ class App extends Component {
                         <div className='root-categories'>
                             <h1>Categories</h1>
                             <ul className='list-group'>
-                                {this.props.categories.map(category =>
-                                    <Link key={category.name} to={'/category/' + category}>
-                                        <li className='list-group-item justify-content-between' key={category}>{category.toUpperCase()}
-                                            <span className="badge badge-default badge-pill">
-                                                {HelperMethods.countPostsByCategory(this.props.allIds, this.props.byId, category)}
-                                            </span>
-                                        </li>
-                                    </Link>
-                                )}
+                                <ListTemplate type='categories'></ListTemplate>
                             </ul>
                         </div>
                         <div className='root-posts'>
