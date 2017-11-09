@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
+import {
+    upvotePost,
+    upvoteComment
+} from '../actions';
 import { Link } from 'react-router-dom';
 import * as HelperMethods from '../helpers/HelperMethods';
 var moment = require('moment');
@@ -60,11 +64,22 @@ class ListTemplate extends Component {
         )
     }
 
+    upvote = (type, id, e) => {
+        e.preventDefault();
+        if(type === 'post') {
+            let voteScore = this.props.postsById[id].voteScore + 1;
+            this.props.upvotePost({ id, voteScore })
+        }
+    }
+
 
 
     postTemplate = (post, isNotSingle) => {
         return (
             <div>
+                <li key={post.id}>
+                    ID: {post.id}
+                </li>
                 <li key={post.title}>
                     Title: {post.title}
                 </li>
@@ -91,7 +106,11 @@ class ListTemplate extends Component {
                             </li>
                         </Link>
                     </div>
-                    : ''}
+                    : 
+                    <div>
+                        <button onClick={(e) => {this.upvote('post', post.id, e)}} className='btn btn-success'>Upvote</button>                 
+                    </div>
+                    }
             </div>
         )
     }
@@ -147,4 +166,12 @@ function mapStateToProps({ posts, comments, categories }) {
 }
 
 
-export default connect(mapStateToProps)(ListTemplate);;
+function mapDispatchToProps(dispatch) {
+    return {
+        upvotePost: (data) => dispatch(upvotePost(data)),
+        upvoteComment: (data) => dispatch(upvoteComment(data))
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListTemplate);;

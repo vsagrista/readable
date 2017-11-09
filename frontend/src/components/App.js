@@ -31,8 +31,8 @@ class App extends Component {
             ))
         }).then(() => {
             this.props.saveSortedPostsIds({
-                allIds: this.sortItemsBy('timestamp'),  
-                sortedBy: 'timestamp'}
+                allIds: this.sortItemsBy('voteScore'),  
+                sortedBy: 'voteScore'}
             );
         });
     }
@@ -55,15 +55,6 @@ class App extends Component {
                         <div className='root-posts'>
                             <h1>All Posts</h1>
                             <ul className='list-group'>
-                                {/*{this.props.allIds.map(id =>
-                                    <Link to={'/post/' + this.props.byId[id].id}>
-                                        <li className='list-group-item text-left'>{this.props.byId[id].title}
-                                            <span className="badge badge-default badge-pill">
-                                                {this.props.byId[id].voteScore}
-                                            </span>
-                                        </li>
-                                    </Link>
-                                )}*/}
                                 <ListTemplate type='posts'></ListTemplate>
                             </ul>
                             <button onClick={() => {

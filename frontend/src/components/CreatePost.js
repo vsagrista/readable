@@ -20,9 +20,8 @@ class CreatePost extends Component {
                 body: "",
                 author: "",
                 category: "",
-                voteScore: null,
+                voteScore: 0,
                 deleted: null
-
             }
         }
     }
@@ -40,7 +39,7 @@ class CreatePost extends Component {
     savePost = (e) => {
         e.preventDefault();
         // add 1 to last ID from ID's array
-        this.state.newPost.id = this.props.allIds.length === 0 ? "0" : (parseInt(this.props.allIds[this.props.allIds.length - 1]) + 1).toString();
+        this.state.newPost.id = this.props.allPostsIds.length === 0 ? "0" : (parseInt(this.props.allPostsIds[this.props.allPostsIds.length - 1]) + 1).toString();
         this.props.createPost(this.state.newPost);
     }
 
@@ -84,22 +83,15 @@ class CreatePost extends Component {
                         <button type='submit'>Create</button>
                     </form>
                 </div>
-                <div>
-                    <Link to='/Category'>Category</Link>
-                </div>
-                <div>
-                    <Route exact path='/Category' render={() => (
-                        <Category />
-                    )} />
-                </div>
+
             </div>
         )
     }
 }
 
-function mapStateToProps({ posts }) {
+function mapStateToProps({ categories, posts }) {
     return {
-        byId: posts.byId, allIds: posts.allIds
+        postsById: posts.postsById, allPostsIds: posts.allIds
     }
 }
 
