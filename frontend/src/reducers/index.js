@@ -69,9 +69,13 @@ function posts(state = initialPostsState, action) {
         case UPVOTE_POST:
             delete action.type;
             return {
+                ...state,
                 byId: {
                     ...state.byId,
-                    [action.id]: action
+                    [action.id]: {
+                        ...state.byId[action.id],
+                        voteScore: action.voteScore
+                    }
                 }
             }
         default:
