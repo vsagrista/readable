@@ -69,15 +69,16 @@ class CreatePost extends Component {
                             onChange={e => this.handleInputChange({ author: e.target.value })}
                         />
                         <p>Category</p>
-                        <select  value={this.state.newPost.category}
-                                onChange={e => this.handleInputChange({ category: e.target.value })}
-                                required
+                        <select value={this.state.newPost.category}
+                            onChange={e => this.handleInputChange({ category: e.target.value })}
+                            required
                         >
-                                <option disabled value="">-- Category --</option>
-                            {["Sport", "Politics", "Tech"].map(category => (
+                            <option disabled value="">-- Category --</option>
+                            {console.log(this.props.categories)}
+                            {this.props.categories.names.map(category => (
                                 <option key={category} value={category}
                                 >{category}</option>
-                                )
+                            )
                             )}
                         </select>
                         <button type='submit'>Create</button>
@@ -91,6 +92,7 @@ class CreatePost extends Component {
 
 function mapStateToProps({ categories, posts }) {
     return {
+        categories: categories,
         postsById: posts.postsById, allPostsIds: posts.allIds
     }
 }

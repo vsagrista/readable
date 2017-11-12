@@ -1,4 +1,4 @@
-export const ADD_COMMENT = 'ADD_COMMENT';
+export const CREATE_COMMENT = 'CREATE_COMMENT';
 export const CREATE_POST = 'CREATE_POST';
 export const SAVE_SORTED_IDS = 'SAVE_SORTED_IDS';
 export const SAVE_CATEGORY = 'SAVE_CATEGORY';
@@ -13,9 +13,9 @@ export function saveCategories({ names }) {
 }
 
 
-export function addComment({ id, parentId, timestamp, body, author, voteScore, parentDeleted }) {
+export function createComment({ id, parentId, timestamp, body, author, voteScore, parentDeleted }) {
     return {
-        type: ADD_COMMENT,
+        type: CREATE_COMMENT,
         id, 
         parentId, 
         timestamp, 
@@ -51,6 +51,7 @@ export function upvotePost({ id, voteScore }) {
 export function upvoteComment({ id, voteScore }) {
     return {
         type: UPVOTE_COMMENT,
+        id,
         voteScore: voteScore
     }
 }

@@ -1,6 +1,6 @@
 import {
     CREATE_POST,
-    ADD_COMMENT,
+    CREATE_COMMENT,
     SAVE_SORTED_IDS,
     SAVE_CATEGORY,
     UPVOTE_POST,
@@ -20,24 +20,15 @@ const initialPostsState = {
 }
 
 const initialCommentsState = {
-    byId: {
-        id: {
-            id: null,
-            parentId: null,
-            timestamp: null,
-            body: null,
-            author: null,
-            voteScore: null,
-            parentDeleted: false
-        }
-    },
-    allIds: []
+    byId: {},
+    allIds: [],
+    isFetching: false,
+    sortedBy: 'voteScore'
 }
 
 function categories(state = initialCategoriesState, action) {
     switch (action.type) {
         case SAVE_CATEGORY:
-            delete action.type;
             return {
                 ...state,
                 names: action.names
@@ -84,9 +75,9 @@ function posts(state = initialPostsState, action) {
 }
 
 function comments(state = initialCommentsState, action) {
-    // const { id, parentId, timestamp, body, author, voteScore, parentDeleted } = action;
+    const { id, parentId, timestamp, body, author, voteScore, parentDeleted } = action;
     switch (action.type) {
-        case ADD_COMMENT:
+        case CREATE_COMMENT:
             delete action.type;
             return {
                 byId: {
@@ -99,7 +90,13 @@ function comments(state = initialCommentsState, action) {
             delete action.type;
             return {
                 ...state,
-                voteScore: action.voteScore
+                byId: {
+                    ...state.byId,
+                    [action.id]: {
+                        ...state.byId[action.id],
+                        voteScore: action.voteScore
+                    }
+                }
             }
         default:
             return state

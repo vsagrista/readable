@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import CreateComment from './CreateComment'
 import { connect } from 'react-redux';
 import {
     upvotePost,
@@ -69,6 +70,9 @@ class ListTemplate extends Component {
         if(type === 'post') {
             let voteScore = this.props.postsById[id].voteScore + 1;
             this.props.upvotePost({ id, voteScore })
+        } else {
+            let voteScore = this.props.commentsById[id].voteScore + 1;
+            this.props.upvoteComment({ id, voteScore })
         }
     }
 
@@ -109,7 +113,13 @@ class ListTemplate extends Component {
                     : 
                     <div>
                         <button onClick={(e) => {this.upvote('post', post.id, e)}} className='btn btn-success'>Upvote</button>                 
+                        <div>
+                            {console.log("post: ", post)}
+                            <CreateComment parentId={post.id} postDeleted={post.postDeleted}></CreateComment>
+                            <div>{this.renderComments()}</div>
+                        </div>
                     </div>
+
                     }
             </div>
         )
@@ -140,7 +150,9 @@ class ListTemplate extends Component {
                     <li key={comment.timestamp}>
                         Time: {(comment.timestamp).toString()}
                     </li>
+                    <button onClick={(e) => {this.upvote('comment', comment.id, e)}} className='btn btn-success'>Upvote</button>
                 </ul>
+                <hr></hr>
             </div>
         )
     }
@@ -161,7 +173,8 @@ function mapStateToProps({ posts, comments, categories }) {
         categories: categories.names,
         postsById: posts.byId, allPostsId: posts.allIds,
         commentsById: comments.byId, allCommentsById: comments.allIds,
-        postsSortedBy: posts.sortedBy
+        postsSortedBy: posts.sortedBy,
+        commentsSortedBy: comments.sortedBy
     }
 }
 

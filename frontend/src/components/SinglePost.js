@@ -12,7 +12,7 @@ class SinglePost extends Component {
             <div>
                 Single Post
                 <ul>
-                    <ListTemplate type='post' singlePostId={this.props.id} />
+                    <ListTemplate type='post' singlePostId={this.props.id}  />
                 </ul>
             </div>
         )
