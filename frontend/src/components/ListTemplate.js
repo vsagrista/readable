@@ -67,16 +67,22 @@ class ListTemplate extends Component {
 
     upvote = (type, id, e) => {
         e.preventDefault();
-        if(type === 'post') {
+        if (type === 'post') {
             let voteScore = this.props.postsById[id].voteScore + 1;
             this.props.upvotePost({ id, voteScore })
         } else {
+            console.log(type, id)
             let voteScore = this.props.commentsById[id].voteScore + 1;
             this.props.upvoteComment({ id, voteScore })
+            this.sortItemsBy(this.props.commentsSortedBy)
+            console.log('this.props: ', this.props)
         }
+
     }
 
-
+    sortItemsBy(option) {
+        return HelperMethods.sortIdsBy(this.props.commentsById, option)
+    }
 
     postTemplate = (post, isNotSingle) => {
         return (
@@ -110,25 +116,25 @@ class ListTemplate extends Component {
                             </li>
                         </Link>
                     </div>
-                    : 
+                    :
                     <div>
-                        <button onClick={(e) => {this.upvote('post', post.id, e)}} className='btn btn-success'>Upvote</button>                 
+                        <button onClick={(e) => { this.upvote('post', post.id, e) }} className='btn btn-success'>Upvote</button>
                         <div>
-                            {console.log("post: ", post)}
                             <CreateComment parentId={post.id} postDeleted={post.postDeleted}></CreateComment>
-                            <div>{this.renderComments()}</div>
+                            <div>{this.renderComments(post.id)}</div>
                         </div>
                     </div>
 
-                    }
+                }
             </div>
         )
     }
 
-    renderComments = () => {
-        return this.props.allCommentsById.map(id => (
-            this.commentTemplate(this.props.commentsById[id])
-        ));
+    renderComments = (parentId) => {
+        return this.props.allCommentsById.map((id) => {
+            if (this.props.commentsById[id].parentId === parentId)
+                return this.commentTemplate(this.props.commentsById[id]);
+        });
     }
 
     commentTemplate = (comment) => {
@@ -150,7 +156,10 @@ class ListTemplate extends Component {
                     <li key={comment.timestamp}>
                         Time: {(comment.timestamp).toString()}
                     </li>
-                    <button onClick={(e) => {this.upvote('comment', comment.id, e)}} className='btn btn-success'>Upvote</button>
+                    <button onClick={(e) => {
+                        this.upvote('comment', comment.id, e)
+                    }
+                    } className='btn btn-success'>Upvote</button>
                 </ul>
                 <hr></hr>
             </div>

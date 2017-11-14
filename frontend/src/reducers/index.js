@@ -44,6 +44,7 @@ function posts(state = initialPostsState, action) {
         case CREATE_POST:
             delete action.type;
             return {
+                ...state,
                 byId: {
                     ...state.byId,
                     [action.id]: action
@@ -80,6 +81,7 @@ function comments(state = initialCommentsState, action) {
         case CREATE_COMMENT:
             delete action.type;
             return {
+                ...state,
                 byId: {
                     ...state.byId,
                     [action.id]: action
@@ -97,6 +99,13 @@ function comments(state = initialCommentsState, action) {
                         voteScore: action.voteScore
                     }
                 }
+            }
+        case SAVE_SORTED_IDS:
+            delete action.type;
+            return {
+                ...state,
+                allIds: action.allIds,
+                sortedBy: action.sortedBy
             }
         default:
             return state
