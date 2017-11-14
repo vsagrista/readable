@@ -76,6 +76,7 @@ function posts(state = initialPostsState, action) {
 }
 
 function comments(state = initialCommentsState, action) {
+    console.log("running reducer, action: ", action)
     const { id, parentId, timestamp, body, author, voteScore, parentDeleted } = action;
     switch (action.type) {
         case CREATE_COMMENT:

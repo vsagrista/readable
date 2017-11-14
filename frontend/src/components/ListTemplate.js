@@ -12,7 +12,7 @@ var moment = require('moment');
 
 class ListTemplate extends Component {
 
-    listContent = (type) => {
+    listContentManager = (type) => {
         switch (type) {
             case 'categories':
                 return this.renderCategories();
@@ -23,7 +23,7 @@ class ListTemplate extends Component {
             case 'allPostsByCategory':
                 return this.renderPostsByCategory();
             case 'allComments':
-                return this.renderComments();
+                return this.renderComments(this.props.singlePostId);
             default:
                 return <div></div>
         }
@@ -63,6 +63,13 @@ class ListTemplate extends Component {
                 </Link>
             )
         )
+    }
+
+    renderComments = (parentId) => {
+        return this.props.allCommentsById.map((id) => {
+            if (this.props.commentsById[id].parentId === parentId)
+                return this.commentTemplate(this.props.commentsById[id]);
+        });
     }
 
     upvote = (type, id, e) => {
@@ -117,24 +124,10 @@ class ListTemplate extends Component {
                         </Link>
                     </div>
                     :
-                    <div>
-                        <button onClick={(e) => { this.upvote('post', post.id, e) }} className='btn btn-success'>Upvote</button>
-                        <div>
-                            <CreateComment parentId={post.id} postDeleted={post.postDeleted}></CreateComment>
-                            <div>{this.renderComments(post.id)}</div>
-                        </div>
-                    </div>
-
+                    <button onClick={(e) => { this.upvote('post', post.id, e) }} className='btn btn-success'>Upvote</button>
                 }
             </div>
         )
-    }
-
-    renderComments = (parentId) => {
-        return this.props.allCommentsById.map((id) => {
-            if (this.props.commentsById[id].parentId === parentId)
-                return this.commentTemplate(this.props.commentsById[id]);
-        });
     }
 
     commentTemplate = (comment) => {
@@ -170,7 +163,7 @@ class ListTemplate extends Component {
         return (
             <div>
                 Hello From list component
-                {this.listContent(this.props.type)}
+                {this.listContentManager(this.props.type)}
             </div>
         )
     }
