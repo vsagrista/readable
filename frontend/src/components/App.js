@@ -48,7 +48,7 @@ class App extends Component {
                     <div className="App">
                         <div className='root-categories'>
                             <h1>Categories</h1>
-                            <ul className='list-group'>
+                            <ul key='categories-list' className='list-group'>
                                 <ListTemplate type='categories'></ListTemplate>
                             </ul>
                         </div>

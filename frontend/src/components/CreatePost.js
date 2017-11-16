@@ -4,9 +4,6 @@ import { connect } from 'react-redux';
 import {
     createPost
 } from '../actions';
-import Category from './Category';
-import { Link } from 'react-router-dom';
-import { Route } from 'react-router-dom';
 
 class CreatePost extends Component {
 

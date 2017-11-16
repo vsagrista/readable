@@ -4,9 +4,6 @@ import { connect } from 'react-redux';
 import {
     createComment
 } from '../actions';
-import Category from './Category';
-import { Link } from 'react-router-dom';
-import { Route } from 'react-router-dom';
 
 class CreateComment extends Component {
 
@@ -50,6 +47,7 @@ class CreateComment extends Component {
         // add 1 to last ID from ID's array
         this.state.newComment.id = this.props.allCommentsIds.length === 0 ? "0" : (parseInt(this.props.allCommentsIds[this.props.allCommentsIds.length - 1]) + 1).toString();
         this.props.createComment(this.state.newComment);
+        console.log("this.state: ", this.state)
     }
 
     render() {

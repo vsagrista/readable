@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../App.css';
-import CreateComment from './CreateComment'
 import { connect } from 'react-redux';
 import {
     upvotePost,
@@ -131,7 +130,7 @@ class ListTemplate extends Component {
     commentTemplate = (comment) => {
         return (
             <div>
-                <ul>
+                <ul key={comment.id}>
                     <li key={comment.body}>
                         Body: {comment.body}
                     </li>

@@ -1,4 +1,3 @@
-import { connect } from 'react-redux';
 var _ = require('lodash');
 
 export const capitalizeFirstLetter = (string) => {
