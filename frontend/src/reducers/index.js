@@ -2,6 +2,7 @@ import {
     CREATE_POST,
     CREATE_COMMENT,
     SAVE_SORTED_IDS,
+    SAVE_SORTED_COMMENTS_IDS,
     SAVE_CATEGORY,
     UPVOTE_POST,
     UPVOTE_COMMENT
@@ -76,7 +77,6 @@ function posts(state = initialPostsState, action) {
 }
 
 function comments(state = initialCommentsState, action) {
-    console.log("running reducer, action: ", action)
     const { id, parentId, timestamp, body, author, voteScore, parentDeleted } = action;
     switch (action.type) {
         case CREATE_COMMENT:
@@ -101,7 +101,7 @@ function comments(state = initialCommentsState, action) {
                     }
                 }
             }
-        case SAVE_SORTED_IDS:
+        case SAVE_SORTED_COMMENTS_IDS:
             delete action.type;
             return {
                 ...state,

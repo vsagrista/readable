@@ -74,7 +74,6 @@ class CreatePost extends Component {
                             required
                         >
                             <option disabled value="">-- Category --</option>
-                            {console.log(this.props.categories)}
                             {this.props.categories.names.map(category => (
                                 <option key={category} value={category}
                                 >{category}</option>

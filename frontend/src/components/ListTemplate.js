@@ -78,11 +78,9 @@ class ListTemplate extends Component {
             let voteScore = this.props.postsById[id].voteScore + 1;
             this.props.upvotePost({ id, voteScore })
         } else {
-            console.log(type, id)
             let voteScore = this.props.commentsById[id].voteScore + 1;
             this.props.upvoteComment({ id, voteScore })
             this.sortItemsBy(this.props.commentsSortedBy)
-            console.log('this.props: ', this.props)
         }
 
     }
