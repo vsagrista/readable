@@ -9,7 +9,7 @@ export const countPostsByCategory = (idsArr, posts, category) => {
     idsArr.map((id) => {
         if (posts[id].category === category)
             counter++;
-    })
+    });
     return counter;
 }
 

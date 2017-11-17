@@ -7,6 +7,7 @@ import {
 } from '../actions';
 import { Link } from 'react-router-dom';
 import * as HelperMethods from '../helpers/HelperMethods';
+import * as APIMethods from '../helpers/APIMethods';
 var moment = require('moment');
 
 class ListTemplate extends Component {
@@ -17,15 +18,21 @@ class ListTemplate extends Component {
                 return this.renderCategories();
             case 'post': // single post view
                 return this.postTemplate(this.props.postsById[this.props.singlePostId]);
-            case 'posts': // Root view
-                return this.renderPosts();
             case 'allPostsByCategory':
                 return this.renderPostsByCategory();
             case 'allComments':
-                return this.renderComments(this.props.singlePostId);
+                return this.getComments();
             default:
                 return <div></div>
         }
+    }
+
+    getComments = () => {
+        APIMethods.getComments(this.props.singlePostId).then((data) => {
+            console.log('data: ', data);
+        }).then(()=> {
+            this.renderComments;
+        });
     }
 
     renderCategories = () => {
@@ -50,19 +57,6 @@ class ListTemplate extends Component {
         ));
     }
 
-    renderPosts = () => {
-        return (
-            this.props.allPostsId.map(id =>
-                <Link to={'/post/' + this.props.postsById[id].id}>
-                    <li className='list-group-item text-left'>{this.props.postsById[id].title}
-                        <span className="badge badge-default badge-pill">
-                            {this.props.postsById[id].voteScore}
-                        </span>
-                    </li>
-                </Link>
-            )
-        )
-    }
 
     renderComments = (parentId) => {
         return this.props.allCommentsById.map((id) => {
@@ -170,7 +164,8 @@ class ListTemplate extends Component {
 function mapStateToProps({ posts, comments, categories }) {
     return {
         categories: categories.names,
-        postsById: posts.byId, allPostsId: posts.allIds,
+        postsById: posts.byId, 
+        allPostsId: posts.allIds,
         commentsById: comments.byId, allCommentsById: comments.allIds,
         postsSortedBy: posts.sortedBy,
         commentsSortedBy: comments.sortedBy

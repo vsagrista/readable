@@ -10,6 +10,7 @@ import CreatePost from './CreatePost';
 import Category from './Category';
 import SinglePost from './SinglePost';
 import ListTemplate from './ListTemplate';
+import HomePageListTemplate from './HomePageListTemplate';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import * as APIMethods from '../helpers/APIMethods';
@@ -18,11 +19,11 @@ import * as HelperMethods from '../helpers/HelperMethods';
 
 class App extends Component {
 
-    componentDidMount() {   
+    componentDidMount() {
         APIMethods.getCategories().then((data) => {
             let categories = [];
-            data.categories.map((category) =>  categories.push(category.name))
-            this.props.saveCategories({names: categories})
+            data.categories.map((category) => categories.push(category.name))
+            this.props.saveCategories({ names: categories })
         });
 
         APIMethods.getPosts().then((data) => {
@@ -31,14 +32,15 @@ class App extends Component {
             ))
         }).then(() => {
             this.props.saveSortedPostsIds({
-                allIds: this.sortItemsBy('voteScore'),  
-                sortedBy: 'voteScore'}
+                allIds: this.sortItemsBy('voteScore'),
+                sortedBy: 'voteScore'
+            }
             );
         });
     }
 
     sortItemsBy(option) {
-        return  HelperMethods.sortIdsBy(this.props.byId, option)
+        return HelperMethods.sortIdsBy(this.props.byId, option)
     }
 
     render() {
@@ -48,23 +50,18 @@ class App extends Component {
                     <div className="App">
                         <div className='root-categories'>
                             <h1>Categories</h1>
-                            <ul key='categories-list' className='list-group'>
-                                <ListTemplate type='categories'></ListTemplate>
-                            </ul>
+                            <HomePageListTemplate type='category' items={this.props.categories} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                         </div>
                         <div className='root-posts'>
                             <h1>All Posts</h1>
-                            <ul className='list-group'>
-                                <ListTemplate type='posts'></ListTemplate>
-                            </ul>
+                            <HomePageListTemplate type='post' items={this.props.allPostsId} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                             <button onClick={() => {
                                 let option = this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
-                                this.props.saveSortedPostsIds({allIds: this.sortItemsBy(option), sortedBy: option});
+                                this.props.saveSortedPostsIds({ allIds: this.sortItemsBy(option), sortedBy: option });
                                 }
                             }>
                                 Sort by: {this.props.sortedBy}
                             </button>
-
                         </div>
                         <Link to='/createpost'>Create Post</Link>
                     </div>
@@ -89,9 +86,10 @@ class App extends Component {
 
 function mapStateToProps({ categories, posts }) {
     return {
+        postsById: posts.byId, allPostsId: posts.allIds,
         categories: categories.names,
-        byId: posts.byId, 
-        allIds: posts.allIds, 
+        byId: posts.byId,
+        allIds: posts.allIds,
         sortedBy: posts.sortedBy
     }
 }
