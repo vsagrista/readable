@@ -10,10 +10,16 @@ import * as HelperMethods from '../helpers/HelperMethods';
 import * as APIMethods from '../helpers/APIMethods';
 var moment = require('moment');
 
-class PostTemplate extends Component {
+class Post extends Component {
+
+    upvote = (id, e) => {
+        e.preventDefault();
+        let voteScore = this.props.postsById[id].voteScore + 1;
+        this.props.upvotePost({ id, voteScore })
+    }
 
     render() {
-       return (
+        return (
             <ul>
                 <li key={this.props.post.id}>
                     ID: {this.props.post.id}
@@ -36,11 +42,30 @@ class PostTemplate extends Component {
                 <li key={this.props.post.timestamp}>
                     Date: {moment(this.props.post.timestamp).format("DD/MM/YYYY")}
                 </li>
-            </ul>
-        )
+                {
+                    this.props.singlePostView &&
+                    < button onClick={(e) => { this.upvote(this.props.post.id, e) }} className='btn btn-default'><i className='glyphicon glyphicon-hand-right'></i></button>
+                }
 
+            </ul >
+        )
     }
 
 }
 
-export default PostTemplate;
+
+function mapStateToProps({ posts }) {
+    return {
+        postsById: posts.byId, 
+    }
+}
+
+
+function mapDispatchToProps(dispatch) {
+    return {
+        upvotePost: (data) => dispatch(upvotePost(data))
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

@@ -9,7 +9,6 @@ import {
 import CreatePost from './CreatePost';
 import Category from './Category';
 import SinglePost from './SinglePost';
-import ListTemplate from './ListTemplate';
 import HomePageListTemplate from './HomePageListTemplate';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
@@ -53,12 +52,12 @@ class App extends Component {
                             <HomePageListTemplate type='category' items={this.props.categories} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                         </div>
                         <div className='root-posts'>
-                            <h1>All Posts</h1>
+                            <h1>All Posts sorted by: {this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore'}</h1>
                             <HomePageListTemplate type='post' items={this.props.allPostsId} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                             <button onClick={() => {
                                 let option = this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
                                 this.props.saveSortedPostsIds({ allIds: this.sortItemsBy(option), sortedBy: option });
-                                }
+                            }
                             }>
                                 Sort by: {this.props.sortedBy}
                             </button>

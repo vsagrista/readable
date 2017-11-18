@@ -1,4 +1,13 @@
+import React, { Component } from 'react';
+import '../App.css';
+import { connect } from 'react-redux';
+import {
+    upvotePost,
+    upvoteComment
+} from '../actions';
 var _ = require('lodash');
+
+
 
 export const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -21,3 +30,4 @@ export const sortIdsBy = (items, option) => {
     _.sortBy(itemsArray, option).map(item => sortedIds.push(item.id));
     return sortedIds.reverse();
 }
+

@@ -75,7 +75,6 @@ class ListTemplate extends Component {
             this.props.upvoteComment({ id, voteScore })
             this.sortItemsBy(this.props.commentsSortedBy)
         }
-
     }
 
     sortItemsBy(option) {
