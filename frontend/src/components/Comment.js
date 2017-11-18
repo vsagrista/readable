@@ -23,6 +23,7 @@ class Comment extends Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <div>
                 <ul key={this.props.comment.id}>
