@@ -1,13 +1,4 @@
-import React, { Component } from 'react';
-import '../App.css';
-import { connect } from 'react-redux';
-import {
-    upvotePost,
-    upvoteComment
-} from '../actions';
 var _ = require('lodash');
-
-
 
 export const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -15,9 +6,10 @@ export const capitalizeFirstLetter = (string) => {
 
 export const countPostsByCategory = (idsArr, posts, category) => {
     let counter = 0;
-    idsArr.map((id) => {
-        if (posts[id].category === category)
+    idsArr.forEach((id) => {
+        if (posts[id].category === category){
             counter++;
+        }
     });
     return counter;
 }

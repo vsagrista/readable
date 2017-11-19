@@ -5,36 +5,12 @@ import { saveSortedCommentsIds, createComment } from '../actions';
 import Comment from './Comment';
 import Post from './Post';
 import CreateComment from './CreateComment';
-import * as APIMethods from '../helpers/APIMethods';
 import * as HelperMethods from '../helpers/HelperMethods';
 
 
 class SinglePost extends Component {
 
-    constructor() {
-        super();
-        this.state = {
-            commentsParentIds: []
-        }
-    }
-
-    componentDidMount() {
-        let commentsParentIds = [];
-        APIMethods.getComments(this.props.id).then((data) => {
-            data.map(comment => {
-                this.props.allCommentsIds.indexOf(comment.id) === -1 && this.props.createComment(comment)
-                commentsParentIds.push(comment.parentId)
-            });
-            console.log(this.props.allCommentsIds, 'here')
-            
-        }).then(() => {
-            this.setState({
-                commentsParentIds: commentsParentIds
-            });
-        });
-    }
-
-    sortItemsBy(option) {
+    sortItemsBy = (option) => {
         return HelperMethods.sortIdsBy(this.props.commentsById, option)
     }
 
@@ -42,22 +18,26 @@ class SinglePost extends Component {
         return (
             <div>
                 Single Post
-                {this.props.postsById[this.props.id] && 
-                  <Post post={this.props.postsById[this.props.id]} singlePostView='true'></Post>}
+                {this.props.postsById[this.props.id] &&
+                    <Post post={this.props.postsById[this.props.id]} singlePostView='true'></Post>}
                 <div>
                     <CreateComment parentId={this.props.id} postDeleted={this.props.postDeleted}></CreateComment>
-                    {this.state.commentsParentIds.length > 0 &&
-                        this.props.allCommentsIds.map((id) => {
-                            return this.state.commentsParentIds.indexOf(this.props.commentsById[id].parentId) > -1 &&
-                            <Comment commentsSortedBy={this.props.commentsSortedBy} comment={this.props.commentsById[id]}></Comment>
-                            
+                    <div className='list-comments'>
+                        {this.props.commentsById &&
+                            this.props.allCommentsIds.map((id) => {
+                                return this.props.commentsById[id].parentId === 
+                                this.props.id && 
+                                <Comment comment={this.props.commentsById[id]} />
                             })
-                    }
-                    {this.props.allCommentsIds.length > 1 &&
-                        <button onClick={() => {
-                            var option = this.props.commentsSortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
-                            this.props.saveSortedCommentsIds({ allIds: this.sortItemsBy(option), commentsSortedBy: option });
-                        }}>Sort by votes</button>}
+                         } 
+                    </div>
+                    <div className='sort-btn-div'>
+                        {this.props.allCommentsIds.length > 1 &&
+                            <button onClick={() => {
+                                var option = this.props.commentsSortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
+                                this.props.saveSortedCommentsIds({ allIds: this.sortItemsBy(option), commentsSortedBy: option });
+                            }}>Sort by votes</button>}
+                    </div>
                 </div>
 
             </div>

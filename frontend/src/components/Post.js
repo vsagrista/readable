@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
-import {
-    upvotePost,
-    upvoteComment
-} from '../actions';
+import { upvotePost } from '../actions';
 import { Link } from 'react-router-dom';
-import * as HelperMethods from '../helpers/HelperMethods';
-import * as APIMethods from '../helpers/APIMethods';
+
 var moment = require('moment');
 
 class Post extends Component {
@@ -44,7 +40,12 @@ class Post extends Component {
                 </li>
                 {
                     this.props.singlePostView &&
-                    < button onClick={(e) => { this.upvote(this.props.post.id, e) }} className='btn btn-default'><i className='glyphicon glyphicon-hand-right'></i></button>
+                    <div>
+                        <button title='Upvote' onClick={(e) => { this.upvote(this.props.post.id, e) }} className='btn btn-default'><i className='glyphicon glyphicon-hand-right'></i></button>
+                        <Link to={`/editpost/${this.props.post.id}`}>
+                            <button className='btn btn-info' title='Edit'><i className='glyphicon glyphicon-pencil'></i></button>
+                        </Link>
+                    </div>
                 }
 
             </ul >
@@ -56,7 +57,7 @@ class Post extends Component {
 
 function mapStateToProps({ posts }) {
     return {
-        postsById: posts.byId, 
+        postsById: posts.byId,
     }
 }
 

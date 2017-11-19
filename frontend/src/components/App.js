@@ -7,6 +7,7 @@ import {
     saveCategories
 } from '../actions';
 import CreatePost from './CreatePost';
+import EditPost from './EditPost';
 import Category from './Category';
 import SinglePost from './SinglePost';
 import HomePageListTemplate from './HomePageListTemplate';
@@ -71,6 +72,9 @@ class App extends Component {
                     )} />
                     <Route exact path='/createpost' render={() => (
                         <CreatePost />
+                    )} />
+                    <Route exact path='/editpost/:postid' render={(props) => (
+                        <EditPost postId={props.match.params.postid} />
                     )} />
                     <Route exact path="/post/:id" render={(props) => (
                         <SinglePost id={props.match.params.id} />

@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
-import {
-    upvoteComment
-} from '../actions';
-import { Link } from 'react-router-dom';
+import { upvoteComment } from '../actions';
 import * as HelperMethods from '../helpers/HelperMethods';
-import * as APIMethods from '../helpers/APIMethods';
+
 var moment = require('moment');
 
 class Comment extends Component {

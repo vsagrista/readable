@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
 import { createComment } from '../actions';
+const uuidv1 = require('uuid/v1');
 
 class CreateComment extends Component {
 
@@ -9,7 +10,7 @@ class CreateComment extends Component {
         super();
         this.state = {
             newComment: {
-                id: "",
+                id: '',
                 timestamp: Date.now(),
                 parentId: "",
                 body: "",
@@ -19,6 +20,7 @@ class CreateComment extends Component {
                 parentDeleted: false
             }
         }
+        this.baseState = this.state;
     }
 
     componentDidMount() {
@@ -31,6 +33,7 @@ class CreateComment extends Component {
     }
 
     handleInputChange = (newCommentInput) => {
+        newCommentInput.id = uuidv1();
         this.setState(state => ({
             ...state,
             newComment: {
@@ -40,21 +43,22 @@ class CreateComment extends Component {
         }))
     }
 
-    savePost = (e) => {
+    saveComment = (e) => {
         e.preventDefault();
-        // add 1 to last ID from ID's array
-        this.state.newComment.id = this.props.allCommentsIds.length === 0 ? "0" : (parseInt(this.props.allCommentsIds[this.props.allCommentsIds.length - 1]) + 1).toString();
         this.props.createComment(this.state.newComment);
-        console.log("this.state: ", this.state)
+        this.resetForm();
+    }
+
+    resetForm = () => {
+        this.setState(this.baseState);
     }
 
     render() {
-        // const { newComment } = this.state;
         return (
             <div>
                 <div>
                     <h3>Add comment</h3>
-                    <form onSubmit={this.savePost}>
+                    <form onSubmit={this.saveComment}>
                         <input key="author"
                             name="author"
                             placeholder="author"

@@ -40,30 +40,16 @@ fetch(`${api}/posts`, {headers: {'Authorization': 'lalal',
 			"Content-Type": "application/json"},
 			method: 'POST',
 			body: JSON.stringify(post)})
-			.then((res) => res.json())		
-			//.then((newPost) => dispatch(addPost(addNewPost)));
+			.then((res) => res.json())
 
 export const updatePost = (id, post) =>
-  fetch(`${api}/posts/${id}`, {
-    method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ post })
-  }).then(res => res.json())
+  fetch(`${api}/posts/${id}`, {headers: {'Authorization': 'lalal',
+			"Content-Type": "application/json"},
+			method: 'PUT',
+			body: JSON.stringify(post)})
+			.then((res) => res.json())
    
 export const upvotePost = (id, post) =>
-  fetch(`${api}/posts/${id}`, {
-    method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ post })
-  }).then(res => res.json())
-   
-export const editPost = (id, post) =>
   fetch(`${api}/posts/${id}`, {
     method: 'POST',
     headers: {

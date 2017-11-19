@@ -5,7 +5,8 @@ import {
     SAVE_SORTED_COMMENTS_IDS,
     SAVE_CATEGORY,
     UPVOTE_POST,
-    UPVOTE_COMMENT
+    UPVOTE_COMMENT,
+    UPDATE_POST
 } from '../actions';
 import { combineReducers } from 'redux';
 
@@ -68,6 +69,15 @@ function posts(state = initialPostsState, action) {
                         ...state.byId[action.id],
                         voteScore: action.voteScore
                     }
+                }
+            }
+        case UPDATE_POST:
+            delete action.type;
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.id]: action
                 }
             }
         default:

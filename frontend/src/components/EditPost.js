@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
-import { createPost } from '../actions';
-const uuidv1 = require('uuid/v1');
+import { updatePost } from '../actions';
+import * as APIMethods from '../helpers/APIMethods';
 
-class CreatePost extends Component {
+class EditPost extends Component {
 
     constructor() {
         super();
         this.state = {
             newPost: {
-                id: uuidv1(),
+                id: "",
                 timestamp: Date.now(),
                 title: "",
                 body: "",
@@ -27,6 +27,26 @@ class CreatePost extends Component {
             }
         }
         this.baseState = this.state;
+
+    }
+
+    componentDidMount() {
+        let post = this.props.postsById[this.props.postId];
+        if (post) {
+            this.bindPostToState(post)
+        } else { // make api call only if necessary
+            APIMethods.getPost(this.props.postId).then((data) => this.bindPostToState(data))
+        }
+    }
+
+    bindPostToState(post) {
+        this.setState(state => ({
+            ...state,
+            newPost: {
+                ...state.newPost,
+                ...post
+            }
+        }))
     }
 
     handleInputChange = (newPostInput) => {
@@ -39,21 +59,21 @@ class CreatePost extends Component {
         }))
     }
 
-    handleSavePost = (saved) => {
+    handleUpdatePost = (saved) => {
         if (saved) {
             this.showNotification(saved);
         }
         else {
             this.showNotification(false);
         }
-        setTimeout(function() {
+        setTimeout(function () {
             this.resetForm()
         }.bind(this), 2000);
     }
 
     showNotification = (ok) => {
         let iconClassName = ok ? 'glyphicon glyphicon-send' : 'glyphicon glyphicon-remove-sign';
-        let message = ok ? 'Post saved! ' : 'Error: the server must have some problem ';
+        let message = ok ? 'Post updated! ' : 'Error: the server must have some problem ';
         this.setState(state => ({
             ...state,
             isFetching: {
@@ -75,10 +95,12 @@ class CreatePost extends Component {
     savePost = (e) => {
         e.preventDefault();
         this.setState({ isFetching: true })
-        //APIMethods.addPost(this.state.newPost).then((data) => {
-            this.props.createPost(this.state.newPost);
-            this.handleSavePost(true);
-        //}).then(()=> APIMethods.getPosts().then((data)=> console.log('posts: ', data)))
+        //APIMethods.updatePost(this.state.newPost.id, this.state.newPost).then((data) => {
+            this.props.updatePost(this.state.newPost);
+            this.handleUpdatePost(true);
+            // console.log('edited', data)
+        //    APIMethods.getPost(data.id).then((data) => console.log('post: ', data))
+        //})
     }
 
 
@@ -87,7 +109,7 @@ class CreatePost extends Component {
         return (
             <div>
                 <div>
-                    <h3>Create new post</h3>
+                    <h3>Edit post</h3>
                     <form onSubmit={this.savePost}>
                         <input key="title"
                             name="title"
@@ -119,7 +141,7 @@ class CreatePost extends Component {
                             )
                             )}
                         </select>
-                        <button disabled={this.state.isFetching} type='submit'>Create</button>
+                        <button disabled={this.state.isFetching} type='submit'>Save</button>
                         <p>{this.state.notification.message} <i className={this.state.notification.iconClassName}></i></p>
                     </form>
                 </div>
@@ -129,19 +151,19 @@ class CreatePost extends Component {
     }
 }
 
-function mapStateToProps({ categories, posts }) {
+function mapStateToProps({ posts, categories }) {
     return {
         categories: categories,
-        postsById: posts.byId, 
+        postsById: posts.byId,
         allPostsIds: posts.allIds
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        createPost: (data) => dispatch(createPost(data))
+        updatePost: (data) => dispatch(updatePost(data))
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatePost);;
+export default connect(mapStateToProps, mapDispatchToProps)(EditPost);;
