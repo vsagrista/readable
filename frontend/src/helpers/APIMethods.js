@@ -36,14 +36,12 @@ export const getComment = (id) =>
     .then(res => res.json())
 
 export const addPost = (post) =>
-  fetch(`${api}/posts`, {
-    method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ post })
-  }).then(res => res.json())
+fetch(`${api}/posts`, {headers: {'Authorization': 'lalal',
+			"Content-Type": "application/json"},
+			method: 'POST',
+			body: JSON.stringify(post)})
+			.then((res) => res.json())		
+			//.then((newPost) => dispatch(addPost(addNewPost)));
 
 export const updatePost = (id, post) =>
   fetch(`${api}/posts/${id}`, {

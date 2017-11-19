@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
 import { saveSortedCommentsIds, createComment } from '../actions';
-import ListTemplate from './ListTemplate';
 import Comment from './Comment';
 import Post from './Post';
 import CreateComment from './CreateComment';

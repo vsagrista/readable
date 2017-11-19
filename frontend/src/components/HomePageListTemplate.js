@@ -9,7 +9,7 @@ class HomePageListTemplate extends Component {
             <ul className='list-group'>
                 {this.props.items.map(item => (
                     <Link key={item.name} to={`/${this.props.type}/` + item}>
-                        <li className='list-group-item justify-content-between' key={item}>{item.toUpperCase()}
+                        <li className='list-group-item justify-content-between' key={item}>{this.props.type === 'category' ? item.toUpperCase() : this.props.byId[item].title }
                             <span className="badge badge-default badge-pill">
                                 {
                                     this.props.type === 'category' ? 

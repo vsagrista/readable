@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
     createPost
 } from '../actions';
+import * as APIMethods from '../helpers/APIMethods';
 
 class CreatePost extends Component {
 
@@ -19,8 +20,15 @@ class CreatePost extends Component {
                 category: "",
                 voteScore: 0,
                 deleted: null
+            },
+            isFetching: false,
+            buttonDisabled: false,
+            notification: {
+                iconClassName: '',
+                message: ''
             }
         }
+        this.baseState = this.state;
     }
 
     handleInputChange = (newPostInput) => {
@@ -33,12 +41,51 @@ class CreatePost extends Component {
         }))
     }
 
+    handleSavePost = (saved) => {
+        if (saved) {
+            this.showNotification(saved);
+        }
+        else {
+            this.showNotification(false);
+        }
+        setTimeout(function() {
+            this.resetForm()
+        }.bind(this), 2000);
+    }
+
+    showNotification = (ok) => {
+        let iconClassName = ok ? 'glyphicon glyphicon-send' : 'glyphicon glyphicon-remove-sign';
+        let message = ok ? 'Post saved! ' : 'Error: the server must have some problem ';
+        this.setState(state => ({
+            ...state,
+            isFetching: {
+                ...state.isFetching,
+                isFetching: true
+            },
+            notification: {
+                ...state.notification,
+                iconClassName,
+                message
+            }
+        }))
+    }
+
+    resetForm = () => {
+        this.setState(this.baseState);
+    }
+
     savePost = (e) => {
         e.preventDefault();
+        this.setState({ isFetching: true })
         // add 1 to last ID from ID's array
         this.state.newPost.id = this.props.allPostsIds.length === 0 ? "0" : (parseInt(this.props.allPostsIds[this.props.allPostsIds.length - 1]) + 1).toString();
-        this.props.createPost(this.state.newPost);
+        APIMethods.addPost(this.state.newPost).then((data) => {
+            console.log('data: ', data)
+            this.props.createPost(this.state.newPost);
+            this.handleSavePost(true);
+        }).then(()=> APIMethods.getPosts().then((data)=> console.log('posts: ', data)))
     }
+
 
     render() {
         // const { newPost } = this.state;
@@ -77,7 +124,8 @@ class CreatePost extends Component {
                             )
                             )}
                         </select>
-                        <button type='submit'>Create</button>
+                        <button disabled={this.state.isFetching} type='submit'>Create</button>
+                        <p>{this.state.notification.message} <i className={this.state.notification.iconClassName}></i></p>
                     </form>
                 </div>
 
