@@ -6,10 +6,12 @@ import {
     SAVE_CATEGORY,
     UPVOTE_POST,
     UPVOTE_COMMENT,
+    UPDATE_COMMENT,
     UPDATE_POST,
     REMOVE_POST,
     REMOVE_COMMENT
 } from '../actions';
+
 import { combineReducers } from 'redux';
 
 const initialCategoriesState = {
@@ -84,7 +86,6 @@ function posts(state = initialPostsState, action) {
             }
         case REMOVE_POST:
             delete action.type;
-            console.log('state: ', state, 'action', action)
             return {
                 ...state,
                 byId: {
@@ -131,6 +132,15 @@ function comments(state = initialCommentsState, action) {
                 ...state,
                 allIds: action.allIds,
                 sortedBy: action.sortedBy
+            }
+        case UPDATE_COMMENT:
+            delete action.type;
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.id]: action
+                }
             }
         default:
             return state

@@ -8,6 +8,7 @@ import {
 } from '../actions';
 import CreatePost from './CreatePost';
 import EditPost from './EditPost';
+import EditComment from './EditComment';
 import Category from './Category';
 import SinglePost from './SinglePost';
 import HomePageListTemplate from './HomePageListTemplate';
@@ -78,7 +79,9 @@ class App extends Component {
                     <Route exact path="/post/:id" render={(props) => (
                         <SinglePost id={props.match.params.id} />
                     )} />
-
+                    <Route exact path="/comments/:id" render={(props) => (
+                        <EditComment id={props.match.params.id} />
+                    )} />
                 </div>
             </div>
         );

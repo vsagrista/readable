@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { upvoteComment } from '../actions';
 import * as HelperMethods from '../helpers/HelperMethods';
@@ -39,6 +40,11 @@ class Comment extends Component {
                     <li key={this.props.comment.timestamp}>
                         Date: {moment(this.props.comment.timestamp).format("DD/MM/YYYY")}
                     </li>
+                    <li>
+                        <Link key={`edit-${this.props.comment.id}`} to={`/comments/${this.props.comment.id}`}>
+                            Edit
+                        </Link>
+                    </li>
                     <button onClick={(e) => {
                         this.upvote('comment', this.props.comment.id, e)
                     }
@@ -53,7 +59,7 @@ class Comment extends Component {
 
 
 function mapStateToProps({ posts, comments, categories }) {
-    return {     
+    return {
         commentsById: comments.byId
     }
 }

@@ -79,7 +79,7 @@ export function saveSortedCommentsIds({ allIds, sortedBy }) {
 }
 export function updateComment({ id, parentId, timestamp, body, author, voteScore, parentDeleted }) {
     return {
-        type: CREATE_COMMENT,
+        type: UPDATE_COMMENT,
         id,
         parentId,
         timestamp,
