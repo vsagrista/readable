@@ -6,11 +6,11 @@ import * as HelperMethods from '../helpers/HelperMethods';
 class HomePageListTemplate extends Component {
     render() {
         return (
-            <ul className='list-group'>
+            <ul key={`list-${this.props.type}`} className='list-group'>
                 {this.props.items.map(item => (
-                    <Link key={item.name} to={`/${this.props.type}/` + item}>
+                    <Link key={`list-${item}`} to={`/${this.props.type}/` + item}>
                         <li className='list-group-item justify-content-between' key={item}>{this.props.type === 'category' ? item.toUpperCase() : this.props.byId[item].title }
-                            <span className="badge badge-default badge-pill">
+                            <span key={`span-${item}`} className="badge badge-default badge-pill">
                                 {
                                     this.props.type === 'category' ? 
                                     HelperMethods.countPostsByCategory(this.props.allIds, this.props.byId, item)

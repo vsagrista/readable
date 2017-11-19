@@ -22,12 +22,12 @@ class SinglePost extends Component {
                     <Post post={this.props.postsById[this.props.id]} singlePostView='true'></Post>}
                 <div>
                     <CreateComment parentId={this.props.id} postDeleted={this.props.postDeleted}></CreateComment>
-                    <div className='list-comments'>
+                    <div key='list-comments' className='list-comments'>
                         {this.props.commentsById &&
                             this.props.allCommentsIds.map((id) => {
                                 return this.props.commentsById[id].parentId === 
                                 this.props.id && 
-                                <Comment comment={this.props.commentsById[id]} />
+                                <Comment key={`comment-${id}`} comment={this.props.commentsById[id]} />
                             })
                          } 
                     </div>

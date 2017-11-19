@@ -50,11 +50,11 @@ class App extends Component {
                     <div className="App">
                         <div className='root-categories'>
                             <h1>Categories</h1>
-                            <HomePageListTemplate type='category' items={this.props.categories} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
+                            <HomePageListTemplate key='template-categories' type='category' items={this.props.categories} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                         </div>
                         <div className='root-posts'>
                             <h1>All Posts sorted by: {this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore'}</h1>
-                            <HomePageListTemplate type='post' items={this.props.allPostsId} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
+                            <HomePageListTemplate key='template-posts' type='post' items={this.props.allPostsId} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                             <button onClick={() => {
                                 let option = this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
                                 this.props.saveSortedPostsIds({ allIds: this.sortItemsBy(option), sortedBy: option });
