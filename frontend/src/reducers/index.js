@@ -6,7 +6,9 @@ import {
     SAVE_CATEGORY,
     UPVOTE_POST,
     UPVOTE_COMMENT,
-    UPDATE_POST
+    UPDATE_POST,
+    REMOVE_POST,
+    REMOVE_COMMENT
 } from '../actions';
 import { combineReducers } from 'redux';
 
@@ -80,9 +82,23 @@ function posts(state = initialPostsState, action) {
                     [action.id]: action
                 }
             }
-        default:
-            return state
+        case REMOVE_POST:
+            delete action.type;
+            console.log('state: ', state, 'action', action)
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.id]: {
+                        ...state.byId[action.id],
+                        deleted: true
+                    }
+                }
+                
     }
+        default:
+    return state
+}
 }
 
 function comments(state = initialCommentsState, action) {

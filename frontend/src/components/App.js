@@ -28,14 +28,13 @@ class App extends Component {
 
         APIMethods.getPosts().then((data) => {
             data.map(post => (
-                this.props.createPost(post)
+                !this.props.allPostsId[post.id] && this.props.createPost(post)
             ))
         }).then(() => {
             this.props.saveSortedPostsIds({
                 allIds: this.sortItemsBy('voteScore'),
                 sortedBy: 'voteScore'
-            }
-            );
+            });
         });
     }
 

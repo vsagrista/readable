@@ -103,3 +103,17 @@ export function updatePost({ id, timestamp, title, body, author, category, voteS
         deleted,
     }
 }
+
+export function removePost({ id }) {
+    return {
+        type: REMOVE_POST,
+        id,
+    }
+}
+
+export function removeComment({ id }) {
+    return {
+        type: REMOVE_COMMENT,
+        id,
+    }
+}
