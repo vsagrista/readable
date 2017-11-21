@@ -27,8 +27,8 @@ class Category extends Component {
 
     render() {
         return (
-            <div>
-                <h1>{HerperMethods.capitalizeFirstLetter(this.props.name)} Category</h1>
+            <div className='display-wrapper'>
+                <h2 className='header-main'>{HerperMethods.capitalizeFirstLetter(this.props.name)} Category</h2>
                 {
                     this.state.postsIds.map((id) => {
                         return (

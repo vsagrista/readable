@@ -1,5 +1,19 @@
+* {
+  font-family: monospace;
+}
+
 .App {
   text-align: center;
+}
+
+.App button {
+  border: none;
+}
+
+.remove-btn {
+  color: white;
+  background: #755656;
+  border-radius: 5px;
 }
 
 .App-logo {
@@ -21,8 +35,30 @@
 .App-intro {
   font-size: large;
 }
+nav {
+  display: block;
+  width: 100%;
+  background: #99c3d4;
+  height: 50px;
+}
+nav p {
+  color: #3c2a2a;
+}
+nav i {
+  padding-right: 5px;
+}
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.display-wrapper {
+  padding: 30px;
+}
+
+.header-main {
+  text-transform: uppercase;
+}
+
+

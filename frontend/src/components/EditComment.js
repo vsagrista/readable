@@ -65,27 +65,24 @@ class EditComment extends Component {
 
     render() {
         return (
-            <div>
-                <div>
-                    <h3>Edit Comment</h3>
-                    <form onSubmit={this.saveComment}>
-                        <input key="author"
-                            name="author"
-                            placeholder="author"
-                            value={this.state.editedComment.author}
-                            onChange={e => this.handleInputChange({ author: e.target.value })}
-                        />
-                        <input key="body"
-                            name="body"
-                            placeholder="body"
-                            value={this.state.editedComment.body}
-                            onChange={e => this.handleInputChange({ body: e.target.value })}
-                        />
-                        <button type='submit'>Save</button>
-                        <p>{this.state.notification.message} <i className={this.state.notification.iconClassName}></i></p>
-                    </form>
-                </div>
-
+            <div className='display-wrapper'>
+                <h3>Edit Comment</h3>
+                <form onSubmit={this.saveComment}>
+                    <input key="author"
+                        name="author"
+                        placeholder="author"
+                        value={this.state.editedComment.author}
+                        onChange={e => this.handleInputChange({ author: e.target.value })}
+                    />
+                    <input key="body"
+                        name="body"
+                        placeholder="body"
+                        value={this.state.editedComment.body}
+                        onChange={e => this.handleInputChange({ body: e.target.value })}
+                    />
+                    <button type='submit'>Save</button>
+                    <p>{this.state.notification.message} <i className={this.state.notification.iconClassName}></i></p>
+                </form>
             </div>
         )
     }

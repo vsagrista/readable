@@ -46,24 +46,31 @@ class App extends Component {
     render() {
         return (
             <div>
+                <nav>
+                    <Link to='/' className="navbar-brand">
+                        <p><i className='glyphicon glyphicon-home'></i>Home</p>
+                    </Link>
+                    <Link to='/createpost' className="navbar-brand" href="#">
+                        <p><i className='glyphicon glyphicon-list-alt'></i>New Post</p>
+                    </Link>
+                </nav>
                 <Route exact path='/' render={() => (
                     <div className="App">
                         <div className='root-categories'>
-                            <h1>Categories</h1>
+                            <h2 className='header-main'>Categories</h2>
                             <HomePageListTemplate key='template-categories' type='category' items={this.props.categories} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                         </div>
                         <div className='root-posts'>
-                            <h1>All Posts sorted by: {this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore'}</h1>
+                            <h2 className='header-main'>All Posts</h2>
                             <HomePageListTemplate key='template-posts' type='post' items={this.props.allPostsId} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                             <button onClick={() => {
                                 let option = this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
                                 this.props.saveSortedPostsIds({ allIds: this.sortItemsBy(option), sortedBy: option });
                             }
-                            }>
-                                Sort by: {this.props.sortedBy}
+                            }><i className='glyphicon glyphicon-sort'></i>
+                                 {this.props.sortedBy}
                             </button>
                         </div>
-                        <Link to='/createpost'>Create Post</Link>
                     </div>
                 )} />
                 <div>

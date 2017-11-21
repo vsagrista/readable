@@ -32,7 +32,7 @@ class HomePageListTemplate extends Component {
                         !this.props.byId[item].deleted &&
 
                         <li className='list-group-item justify-content-between' key={item}>
-                            <button onClick={() => (this.removePost(item))} className='pull-left'>delete</button>
+                            <button onClick={() => (this.removePost(item))} className='pull-left remove-btn'>delete</button>
                             <Link key={`list-${item}`} to={`/${this.props.type}/` + item}>
                                 {this.props.byId[item].title}
                             </Link>

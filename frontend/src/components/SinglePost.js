@@ -22,7 +22,7 @@ class SinglePost extends Component {
 
     render() {
         return (
-            <div>
+            <div className='display-wrapper'>
                 Single Post
                 {this.props.postsById[this.props.id] &&
                     <Post post={this.props.postsById[this.props.id]} singlePostView='true'></Post>}

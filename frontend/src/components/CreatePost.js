@@ -46,7 +46,7 @@ class CreatePost extends Component {
         else {
             this.showNotification(false);
         }
-        setTimeout(function() {
+        setTimeout(function () {
             this.resetForm()
         }.bind(this), 2000);
     }
@@ -75,55 +75,49 @@ class CreatePost extends Component {
     savePost = (e) => {
         e.preventDefault();
         this.setState({ isFetching: true })
-        //APIMethods.addPost(this.state.newPost).then((data) => {
-            this.props.createPost(this.state.newPost);
-            this.handleSavePost(true);
-        //}).then(()=> APIMethods.getPosts().then((data)=> console.log('posts: ', data)))
+        this.props.createPost(this.state.newPost);
+        this.handleSavePost(true);
     }
 
 
     render() {
-        // const { newPost } = this.state;
         return (
-            <div>
-                <div>
-                    <h3>Create new post</h3>
-                    <form onSubmit={this.savePost}>
-                        <input key="title"
-                            name="title"
-                            placeholder="title"
-                            value={this.state.newPost.title}
-                            onChange={e => this.handleInputChange({ title: e.target.value })}
-                        />
-                        <input key="body"
-                            name="body"
-                            placeholder="body"
-                            value={this.state.newPost.body}
-                            onChange={e => this.handleInputChange({ body: e.target.value })}
-                        />
-                        <input key="author"
-                            name="author"
-                            placeholder="author"
-                            value={this.state.newPost.author}
-                            onChange={e => this.handleInputChange({ author: e.target.value })}
-                        />
-                        <p>Category</p>
-                        <select value={this.state.newPost.category}
-                            onChange={e => this.handleInputChange({ category: e.target.value })}
-                            required
-                        >
-                            <option disabled value="">-- Category --</option>
-                            {this.props.categories.names.map(category => (
-                                <option key={category} value={category}
-                                >{category}</option>
-                            )
-                            )}
-                        </select>
-                        <button disabled={this.state.isFetching} type='submit'>Create</button>
-                        <p>{this.state.notification.message} <i className={this.state.notification.iconClassName}></i></p>
-                    </form>
-                </div>
-
+            <div className='display-wrapper'>
+                <h3>Create new post</h3>
+                <form onSubmit={this.savePost}>
+                    <input key="title"
+                        name="title"
+                        placeholder="title"
+                        value={this.state.newPost.title}
+                        onChange={e => this.handleInputChange({ title: e.target.value })}
+                    />
+                    <input key="body"
+                        name="body"
+                        placeholder="body"
+                        value={this.state.newPost.body}
+                        onChange={e => this.handleInputChange({ body: e.target.value })}
+                    />
+                    <input key="author"
+                        name="author"
+                        placeholder="author"
+                        value={this.state.newPost.author}
+                        onChange={e => this.handleInputChange({ author: e.target.value })}
+                    />
+                    <p>Category</p>
+                    <select value={this.state.newPost.category}
+                        onChange={e => this.handleInputChange({ category: e.target.value })}
+                        required
+                    >
+                        <option disabled value="">-- Category --</option>
+                        {this.props.categories.names.map(category => (
+                            <option key={category} value={category}
+                            >{category}</option>
+                        )
+                        )}
+                    </select>
+                    <button disabled={this.state.isFetching} type='submit'>Create</button>
+                    <p>{this.state.notification.message} <i className={this.state.notification.iconClassName}></i></p>
+                </form>
             </div>
         )
     }
@@ -132,7 +126,7 @@ class CreatePost extends Component {
 function mapStateToProps({ categories, posts }) {
     return {
         categories: categories,
-        postsById: posts.byId, 
+        postsById: posts.byId,
         allPostsIds: posts.allIds
     }
 }

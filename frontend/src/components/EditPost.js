@@ -95,57 +95,49 @@ class EditPost extends Component {
     savePost = (e) => {
         e.preventDefault();
         this.setState({ isFetching: true })
-        //APIMethods.updatePost(this.state.newPost.id, this.state.newPost).then((data) => {
-            this.props.updatePost(this.state.newPost);
-            this.handleUpdatePost(true);
-            // console.log('edited', data)
-        //    APIMethods.getPost(data.id).then((data) => console.log('post: ', data))
-        //})
+        this.props.updatePost(this.state.newPost);
+        this.handleUpdatePost(true);
     }
 
 
     render() {
-        // const { newPost } = this.state;
         return (
-            <div>
-                <div>
-                    <h3>Edit post</h3>
-                    <form onSubmit={this.savePost}>
-                        <input key="title"
-                            name="title"
-                            placeholder="title"
-                            value={this.state.newPost.title}
-                            onChange={e => this.handleInputChange({ title: e.target.value })}
-                        />
-                        <input key="body"
-                            name="body"
-                            placeholder="body"
-                            value={this.state.newPost.body}
-                            onChange={e => this.handleInputChange({ body: e.target.value })}
-                        />
-                        <input key="author"
-                            name="author"
-                            placeholder="author"
-                            value={this.state.newPost.author}
-                            onChange={e => this.handleInputChange({ author: e.target.value })}
-                        />
-                        <p>Category</p>
-                        <select value={this.state.newPost.category}
-                            onChange={e => this.handleInputChange({ category: e.target.value })}
-                            required
-                        >
-                            <option disabled value="">-- Category --</option>
-                            {this.props.categories.names.map(category => (
-                                <option key={category} value={category}
-                                >{category}</option>
-                            )
-                            )}
-                        </select>
-                        <button disabled={this.state.isFetching} type='submit'>Save</button>
-                        <p>{this.state.notification.message} <i className={this.state.notification.iconClassName}></i></p>
-                    </form>
-                </div>
-
+            <div className='display-wrapper'>
+                <h3>Edit post</h3>
+                <form onSubmit={this.savePost}>
+                    <input key="title"
+                        name="title"
+                        placeholder="title"
+                        value={this.state.newPost.title}
+                        onChange={e => this.handleInputChange({ title: e.target.value })}
+                    />
+                    <input key="body"
+                        name="body"
+                        placeholder="body"
+                        value={this.state.newPost.body}
+                        onChange={e => this.handleInputChange({ body: e.target.value })}
+                    />
+                    <input key="author"
+                        name="author"
+                        placeholder="author"
+                        value={this.state.newPost.author}
+                        onChange={e => this.handleInputChange({ author: e.target.value })}
+                    />
+                    <p>Category</p>
+                    <select value={this.state.newPost.category}
+                        onChange={e => this.handleInputChange({ category: e.target.value })}
+                        required
+                    >
+                        <option disabled value="">-- Category --</option>
+                        {this.props.categories.names.map(category => (
+                            <option key={category} value={category}
+                            >{category}</option>
+                        )
+                        )}
+                    </select>
+                    <button disabled={this.state.isFetching} type='submit'>Save</button>
+                    <p>{this.state.notification.message} <i className={this.state.notification.iconClassName}></i></p>
+                </form>
             </div>
         )
     }
