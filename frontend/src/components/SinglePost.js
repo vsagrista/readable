@@ -14,6 +14,12 @@ class SinglePost extends Component {
         return HelperMethods.sortIdsBy(this.props.commentsById, option)
     }
 
+    enableUpVote = () => {
+        let totalComments = [];
+        this.props.allCommentsIds.map(id => !this.props.commentsById[id].deleted && totalComments.push(id))
+        return totalComments.length > 1;
+    }
+
     render() {
         return (
             <div>
@@ -25,17 +31,17 @@ class SinglePost extends Component {
                     <div key='list-comments' className='list-comments'>
                         {this.props.commentsById &&
                             this.props.allCommentsIds.map((id) => {
-                                return this.props.commentsById[id].parentId === 
-                                this.props.id && 
+                                return !this.props.commentsById[id].deleted &&
+                                 this.props.commentsById[id].parentId === this.props.id && 
                                 <Comment key={`comment-${id}`} comment={this.props.commentsById[id]} />
                             })
                          } 
                     </div>
                     <div className='sort-btn-div'>
-                        {this.props.allCommentsIds.length > 1 &&
+                        {this.props.allCommentsIds.length > 1 && 
+                         this.enableUpVote() &&
                             <button onClick={() => {
-                                var option = this.props.commentsSortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
-                                this.props.saveSortedCommentsIds({ allIds: this.sortItemsBy(option), commentsSortedBy: option });
+                                this.props.saveSortedCommentsIds({ allIds: this.sortItemsBy('voteScore'), commentsSortedBy: 'voteScore' });
                             }}>Sort by votes</button>}
                     </div>
                 </div>

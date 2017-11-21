@@ -142,6 +142,18 @@ function comments(state = initialCommentsState, action) {
                     [action.id]: action
                 }
             }
+         case REMOVE_COMMENT:
+            delete action.type;
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.id]: {
+                        ...state.byId[action.id],
+                        deleted: true
+                    }
+                }
+            }
         default:
             return state
     }

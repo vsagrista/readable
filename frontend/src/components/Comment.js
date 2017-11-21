@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { upvoteComment } from '../actions';
+import { upvoteComment, removeComment } from '../actions';
 import * as HelperMethods from '../helpers/HelperMethods';
 
 var moment = require('moment');
@@ -21,7 +21,6 @@ class Comment extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <div>
                 <ul key={this.props.comment.id}>
@@ -44,11 +43,15 @@ class Comment extends Component {
                         <Link key={`edit-${this.props.comment.id}`} to={`/comments/${this.props.comment.id}`}>
                             Edit
                         </Link>
+                        
                     </li>
-                    <button onClick={(e) => {
-                        this.upvote('comment', this.props.comment.id, e)
-                    }
-                    } className='btn btn-default'><i className='glyphicon glyphicon-hand-right'></i></button>
+                        <button title='upvote' onClick={(e) => {
+                            this.upvote('comment', this.props.comment.id, e)
+                        }
+                        } className='btn btn-default'><i className='glyphicon glyphicon-hand-right'></i></button>
+                        <button title='remove' onClick={(e) => {
+                            this.props.removeComment({id: this.props.comment.id})
+                        }} className='btn btn-danger'>X</button>
                 </ul>
                 <hr></hr>
             </div>
@@ -58,7 +61,7 @@ class Comment extends Component {
 }
 
 
-function mapStateToProps({ posts, comments, categories }) {
+function mapStateToProps({ comments }) {
     return {
         commentsById: comments.byId
     }
@@ -67,7 +70,8 @@ function mapStateToProps({ posts, comments, categories }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        upvoteComment: (data) => dispatch(upvoteComment(data))
+        upvoteComment: (data) => dispatch(upvoteComment(data)),
+        removeComment: (data) => dispatch(removeComment(data))
     }
 }
 

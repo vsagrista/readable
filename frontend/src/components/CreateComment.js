@@ -17,7 +17,8 @@ class CreateComment extends Component {
                 author: "",
                 category: "",
                 voteScore: 0,
-                parentDeleted: false
+                parentDeleted: false,
+                deleted: false
             }
         }
         this.baseState = this.state;
