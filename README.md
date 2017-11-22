@@ -23,6 +23,7 @@ Git clone the repo & cd to file
 
 ```
 git clone git@github.com:vsagrista/readable.git
+cd readable
 ```
 
 Now open another terminal tab
