@@ -23,20 +23,20 @@ Git clone the repo & cd to file
 
 ```
 git clone git@github.com:vsagrista/readable.git
+```
 
 Now open another terminal tab
 
 ```
 cd api-server
-
-```
 npm install
 ```
+
 Wait for NPM to download the node libraries
 Then:
 
 ```
-npm start
+node server
 ```
 
 Now the server is running, go to the first tab you opened and do the same with the front end folder:
