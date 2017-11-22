@@ -59,17 +59,32 @@ class App extends Component {
                         <div className='root-categories'>
                             <h2 className='header-main'>Categories</h2>
                             <HomePageListTemplate key='template-categories' type='category' items={this.props.categories} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
+                            <div className='sort-btn-wrapper'>
+                                <div className='sort-info'>
+                                    Posts
+                                </div>
+                            </div>
                         </div>
                         <div className='root-posts'>
                             <h2 className='header-main'>All Posts</h2>
                             <HomePageListTemplate key='template-posts' type='post' items={this.props.allPostsId} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
-                            <button onClick={() => {
-                                let option = this.props.sortedBy === 'voteScore' ? 'timestamp' : 'voteScore';
-                                this.props.saveSortedPostsIds({ allIds: this.sortItemsBy(option), sortedBy: option });
-                            }
-                            }><i className='glyphicon glyphicon-sort'></i>
-                                 {this.props.sortedBy}
-                            </button>
+                            <div className='sort-btn-wrapper'>
+                                <button onClick={() => {
+                                        let option = this.props.sortedBy === 'voteScore' 
+                                        ? 'timestamp' 
+                                        : 'voteScore';
+                                        this.props.saveSortedPostsIds({ allIds: this.sortItemsBy(option), sortedBy: option });
+                                        }
+                                    }>
+                                    <i className='glyphicon glyphicon-sort'></i>
+                                    Sort
+                                </button>
+                                <div className='sort-info'>Sorted by: { 
+                                    this.props.sortedBy === 'voteScore' 
+                                    ? 'Votes' 
+                                    : 'Date' }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )} />
@@ -98,7 +113,8 @@ class App extends Component {
 
 function mapStateToProps({ categories, posts }) {
     return {
-        postsById: posts.byId, allPostsId: posts.allIds,
+        postsById: posts.byId,
+        allPostsId: posts.allIds,
         categories: categories.names,
         byId: posts.byId,
         allIds: posts.allIds,

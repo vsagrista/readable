@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { removePost } from '../actions';
 import * as HelperMethods from '../helpers/HelperMethods';
+var moment = require('moment');
 
 class HomePageListTemplate extends Component {
 
@@ -38,7 +39,9 @@ class HomePageListTemplate extends Component {
                             </Link>
                             <span key={`span-${item}`} className="badge badge-default badge-pill">
                                 {
-                                    this.props.byId[item].voteScore
+                                    this.props.sortedBy === 'voteScore' 
+                                    ? this.props.byId[item].voteScore 
+                                    : moment(this.props.byId[item].timestamp).format('DD/MM/YYYY')
                                 }
                             </span>
                         </li>
@@ -48,10 +51,16 @@ class HomePageListTemplate extends Component {
     }
 }
 
+function mapStateToProps({ posts }) {
+    return {
+        sortedBy: posts.sortedBy
+    }
+}
+
 function mapDispatchToProps(dispatch) {
     return {
         removePost: (data) => dispatch(removePost(data))
     }
 }
 
-export default connect(null, mapDispatchToProps)(HomePageListTemplate);;
+export default connect(mapStateToProps, mapDispatchToProps)(HomePageListTemplate);;
