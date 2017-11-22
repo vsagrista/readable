@@ -1,8 +1,8 @@
 # Readable App
 
-Welcome to Readable! This is an application with the goal of leaning the core concepts of Redux. It's build using the create-react-app toolset.
+Welcome to Readable! This is an application with the goal of learning the core concepts of Redux. It's build using the create-react-app toolset.
 <br>
-It is create posts, comments, like them, delete them, sort them by vote, date and so on. Think of a mini-reddit.
+You can create posts, comments, like them, delete them, sort them by vote, date and so on. Think of a "mini-reddit".
 
 ## Getting Started
 
@@ -39,7 +39,7 @@ Then:
 npm start
 ```
 
-Now the server is running, go to the other tab and do the same:
+Now the server is running, go to the first tab you opened and do the same with the front end folder:
 
 ```
 cd frontend
@@ -47,7 +47,7 @@ npm install
 npm start
 ```
 
-The last command will automatically open the app in the brower. Once it does, you will see the home view, with some posts and categories that come from the API (api-server). Play around with it, type something, upvote or delete. Enjoy!
+The last command will automatically open the app in the brower. Once it does, you will see the home view, with some posts and categories that come from the API by default (api-server). Play around with it, type something, upvote or delete. Enjoy!
 
 ## Built With
 
