@@ -14,27 +14,35 @@ export const REMOVE_COMMENT = 'REMOVE_COMMENT';
 
 const uuidv1 = require('uuid/v1');
 
-
-
-export function saveCategories({ names }) {
+export function saveCategory({ names }) {
     return {
         type: SAVE_CATEGORY,
         names,
     }
 }
 
+export function fetchCategories() {
+    return (dispatch) => {
+        return APIMethods.getCategories().then((data) => {
+            let categories = [];
+            data.categories.map((category) => categories.push(category.name))
+            dispatch(saveCategory({ names: categories }))
+        });
+    }
+}
+
 export function createComment(comment) {
-    const {parentId, body, author, parentDeleted} = comment;
+    const { parentId, body, author, parentDeleted } = comment;
     const timestamp = Date.now();
     const newComment = {
         parentId,
-		body,
-		author, 
-		timestamp,
-		id: uuidv1(),
-		voteScore: 0,
+        body,
+        author,
+        timestamp,
+        id: uuidv1(),
+        voteScore: 0,
         parentDeleted
-	}
+    }
     return (dispatch) => {
         return APIMethods.createComment(newComment)
             .then((newComment) => {
@@ -43,7 +51,6 @@ export function createComment(comment) {
             });
     }
 }
-
 
 export function saveComment({ id, parentId, timestamp, body, author, voteScore, parentDeleted }) {
     return {
@@ -59,19 +66,19 @@ export function saveComment({ id, parentId, timestamp, body, author, voteScore, 
 }
 
 export function createPost(post) {
-    const {title, body, author, category} = post;
+    const { title, body, author, category } = post;
     const timestamp = Date.now();
     const newPost = {
-		title,
-		body,
-		author, 
-		category,
-		timestamp,
-		id: uuidv1(),
-		voteScore: 0,
+        title,
+        body,
+        author,
+        category,
+        timestamp,
+        id: uuidv1(),
+        voteScore: 0,
         commentCount: 0,
         deleted: false
-	}
+    }
     return (dispatch) => {
         return APIMethods.createPost(newPost)
             .then((newPost) => {
@@ -95,6 +102,17 @@ export function savePost({ id, timestamp, title, body, author, category, voteSco
         deleted,
     }
 }
+
+export function fetchPosts() {
+    return (dispatch) => {
+        return APIMethods.getPosts().then((data) => {
+            data.map(post => (
+                dispatch(savePost(post))
+            ))
+        })
+    }
+}
+
 
 
 
@@ -142,7 +160,13 @@ export function updateComment({ id, parentId, timestamp, body, author, voteScore
     }
 }
 
-export function updatePost({ id, timestamp, title, body, author, category, voteScore, deleted }) {
+export function updatePost(post) {
+    return (dispatch) => {
+        APIMethods.updatePost(post.id, post).then((data) => (dispatch(saveUpdatedPost(data))))
+    }
+}
+
+export function saveUpdatedPost({ id, timestamp, title, body, author, category, voteScore, deleted }) {
     return {
         type: UPDATE_POST,
         id,

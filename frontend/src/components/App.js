@@ -2,42 +2,36 @@ import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
 import {
-    createPost,
     savePost,
     saveSortedIds,
-    saveCategories
+    fetchCategories,
+    fetchPosts
 } from '../actions';
+
 import CreatePost from './CreatePost';
 import EditPost from './EditPost';
 import EditComment from './EditComment';
 import Category from './Category';
 import SinglePost from './SinglePost';
 import HomePageListTemplate from './HomePageListTemplate';
+
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-import * as APIMethods from '../helpers/APIMethods';
+
 import * as HelperMethods from '../helpers/HelperMethods';
 
 
 class App extends Component {
 
     componentDidMount() {
-        APIMethods.getCategories().then((data) => {
-            let categories = [];
-            data.categories.map((category) => categories.push(category.name))
-            this.props.saveCategories({ names: categories })
-        });
-
-        APIMethods.getPosts().then((data) => {
-            data.map(post => (
-                !this.props.allPostsId[post.id] && this.props.savePost(post)
-            ))
-        }).then(() => {
-            this.props.saveSortedPostsIds({
-                allIds: this.sortItemsBy('voteScore'),
-                sortedBy: 'voteScore'
+        this.props.fetchCategories();
+        this.props.fetchPosts()
+            .then(() => {
+                this.props.saveSortedPostsIds({
+                    allIds: this.sortItemsBy('voteScore'),
+                    sortedBy: 'voteScore'
+                });
             });
-        });
     }
 
     sortItemsBy(option) {
@@ -127,7 +121,8 @@ function mapDispatchToProps(dispatch) {
     return {
         savePost: (data) => dispatch(savePost(data)),
         saveSortedPostsIds: (data) => dispatch(saveSortedIds(data)),
-        saveCategories: (data) => dispatch(saveCategories(data))
+        fetchCategories: () => dispatch(fetchCategories()),
+        fetchPosts: () => dispatch(fetchPosts())
     }
 }
 

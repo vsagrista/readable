@@ -10,8 +10,6 @@ class CreateComment extends Component {
         super();
         this.state = {
             newComment: {
-                id: '',
-                timestamp: Date.now(),
                 parentId: "",
                 body: "",
                 author: "",

@@ -36,38 +36,39 @@ export const getComment = (id) =>
     .then(res => res.json())
 
 export const createPost = (post) => (
-fetch(`${api}/posts`, {headers: {'Authorization': 'BasicAuth',
-			"Content-Type": "application/json"},
-			method: 'POST',
-			body: JSON.stringify(post)})
+  fetch(`${api}/posts`, {
+    headers: {
+      'Authorization': 'BasicAuth',
+      "Content-Type": "application/json"
+    },
+    method: 'POST',
+    body: JSON.stringify(post)
+  })
 ).then((res) => res.json())
 
 export const createComment = (comment) => (
-fetch(`${api}/comments`, {headers: {'Authorization': 'BasicAuth',
-			"Content-Type": "application/json"},
-			method: 'POST',
-			body: JSON.stringify(comment)})
+  fetch(`${api}/comments`, {
+    headers: {
+      'Authorization': 'BasicAuth',
+      "Content-Type": "application/json"
+    },
+    method: 'POST',
+    body: JSON.stringify(comment)
+  })
 ).then((res) => res.json())
-			
+
 
 export const updatePost = (id, post) =>
-  fetch(`${api}/posts/${id}`, {headers: {'Authorization': 'lalal',
-			"Content-Type": "application/json"},
-			method: 'PUT',
-			body: JSON.stringify(post)})
-			.then((res) => res.json())
-   
-//let headers = { headers: { 'Authorization': 'key' } };
+  fetch(`${api}/posts/${id}`, {
+    headers: {
+      'Authorization': 'BasicAuth',
+      "Content-Type": "application/json"
+    },
+    method: 'PUT',
+    body: JSON.stringify(post)
+  })
+    .then((res) => res.json())
 
-/*
-export const upvotePost = (postId) => fetch(`${url}posts/${postId}`, {
-    method: 'post',
-    body: JSON.stringify({
-        option: "upVote"
-    }),
-})
-*/
-   
 export const deletePost = (id, post) =>
   fetch(`${api}/posts/${id}`, {
     method: 'POST',
@@ -77,7 +78,7 @@ export const deletePost = (id, post) =>
     },
     body: JSON.stringify({ post })
   }).then(res => res.json())
-   
+
 export const addComment = () =>
   fetch(`${api}/comments`, {
     method: 'POST',
@@ -96,7 +97,7 @@ export const upvoteComment = (id, comment) =>
     },
     body: JSON.stringify({ comment })
   }).then(res => res.json())
-   
+
 export const updateComment = (id, comment) =>
   fetch(`${api}/comments/${id}`, {
     method: 'POST',

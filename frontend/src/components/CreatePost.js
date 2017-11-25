@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
 import { createPost } from '../actions';
-const uuidv1 = require('uuid/v1');
 
 class CreatePost extends Component {
 
