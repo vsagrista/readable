@@ -53,7 +53,6 @@ export function savePost({ id, timestamp, title, body, author, category, voteSco
 }
 
 export function createPost(post) {
-    console.log("post: ", post)
     const {title, body, author, category} = post;
     const timestamp = Date.now();
     const newPost = {
@@ -67,39 +66,13 @@ export function createPost(post) {
         commentCount: 0,
         deleted: false
 	}
-    console.log("newPost: ", newPost)
-
-    return dispatch => {
-		return fetch(`http://localhost:3001/posts`, {headers: {'Authorization': "BasicAuth",
-			"Content-Type": "application/json"},
-			method: 'POST',
-			body: JSON.stringify(newPost)})
-			.then((res) => res.json())		
-			.then((newPost) => dispatch(savePost(newPost))).then(() => {
-                APIMethods.getPosts().then((data) => { console.log("all posts: ", data) })
-             });
-	}
-    // return (dispatch) => {
-    //     return APIMethods.createPost(newPost)
-    //         .then((newPost) => {
-    //             //console.log("newPost: ", newPost)
-    //             dispatch(savePost(newPost))
-    //         }).then(() => {
-    //             APIMethods.getPosts().then((data) => { console.log("all posts: ", data) })
-    //         })
-
-    // }
-
-
-
-    // return dispatch => {
-    // 	return fetch(`http://localhost:5001/posts`, {headers: {'Authorization': AUTHORIZATION,
-    // 		"Content-Type": "application/json"},
-    // 		method: 'POST',
-    // 		body: JSON.stringify(addNewPost)})
-    // 		.then((res) => res.json())		
-    // 		.then((newPost) => dispatch(addPost(addNewPost)));
-    // }
+    return (dispatch) => {
+        return APIMethods.createPost(newPost)
+            .then((newPost) => {
+                console.log('Saving post', newPost)
+                dispatch(savePost(newPost))
+            })
+    }
 }
 
 export function upvotePost({ id, voteScore }) {

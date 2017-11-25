@@ -36,7 +36,7 @@ export const getComment = (id) =>
     .then(res => res.json())
 
 export const createPost = (post) => (
-fetch(`${api}/posts`, {headers: {'Authorization': 'lalal',
+fetch(`${api}/posts`, {headers: {'Authorization': 'BasicAuth',
 			"Content-Type": "application/json"},
 			method: 'POST',
 			body: JSON.stringify(post)})
