@@ -7,8 +7,8 @@ if (!token)
   token = localStorage.token = Math.random().toString(36).substr(-8)
 
 const headers = {
-  'Accept': 'application/json',
-  'Authorization': 'BasicAuth'
+  'Authorization': 'BasicAuth',
+  "Content-Type": "application/json",
 }
 
 export const getCategories = () =>
@@ -35,12 +35,13 @@ export const getComment = (id) =>
   fetch(`${api}/comments/${id}`, { headers })
     .then(res => res.json())
 
-export const addPost = (post) =>
+export const createPost = (post) => (
 fetch(`${api}/posts`, {headers: {'Authorization': 'lalal',
 			"Content-Type": "application/json"},
 			method: 'POST',
 			body: JSON.stringify(post)})
-			.then((res) => res.json())
+).then((res) => res.json())
+			
 
 export const updatePost = (id, post) =>
   fetch(`${api}/posts/${id}`, {headers: {'Authorization': 'lalal',
@@ -49,15 +50,16 @@ export const updatePost = (id, post) =>
 			body: JSON.stringify(post)})
 			.then((res) => res.json())
    
-export const upvotePost = (id, post) =>
-  fetch(`${api}/posts/${id}`, {
-    method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ post })
-  }).then(res => res.json())
+//let headers = { headers: { 'Authorization': 'key' } };
+
+/*
+export const upvotePost = (postId) => fetch(`${url}posts/${postId}`, {
+    method: 'post',
+    body: JSON.stringify({
+        option: "upVote"
+    }),
+})
+*/
    
 export const deletePost = (id, post) =>
   fetch(`${api}/posts/${id}`, {

@@ -10,14 +10,13 @@ class CreatePost extends Component {
         super();
         this.state = {
             newPost: {
-                id: uuidv1(),
-                timestamp: Date.now(),
                 title: "",
                 body: "",
                 author: "",
                 category: "",
                 voteScore: 0,
-                deleted: null
+                deleted: false,
+                commentCount: 0
             },
             isFetching: false,
             buttonDisabled: false,

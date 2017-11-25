@@ -3,6 +3,7 @@ import '../App.css';
 import { connect } from 'react-redux';
 import {
     createPost,
+    savePost,
     saveSortedIds,
     saveCategories
 } from '../actions';
@@ -29,7 +30,7 @@ class App extends Component {
 
         APIMethods.getPosts().then((data) => {
             data.map(post => (
-                !this.props.allPostsId[post.id] && this.props.createPost(post)
+                !this.props.allPostsId[post.id] && this.props.savePost(post)
             ))
         }).then(() => {
             this.props.saveSortedPostsIds({
@@ -124,7 +125,7 @@ function mapStateToProps({ categories, posts }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        createPost: (data) => dispatch(createPost(data)),
+        savePost: (data) => dispatch(savePost(data)),
         saveSortedPostsIds: (data) => dispatch(saveSortedIds(data)),
         saveCategories: (data) => dispatch(saveCategories(data))
     }

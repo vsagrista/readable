@@ -1,3 +1,5 @@
+import * as APIMethods from '../helpers/APIMethods';
+
 export const CREATE_COMMENT = 'CREATE_COMMENT';
 export const CREATE_POST = 'CREATE_POST';
 export const SAVE_SORTED_IDS = 'SAVE_SORTED_IDS';
@@ -9,6 +11,9 @@ export const UPDATE_POST = 'UPDATE_POST';
 export const UPDATE_COMMENT = 'UPDATE_COMMENT';
 export const REMOVE_POST = 'REMOVE_POST';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
+
+const uuidv1 = require('uuid/v1');
+
 
 
 export function saveCategories({ names }) {
@@ -32,7 +37,8 @@ export function createComment({ id, parentId, timestamp, body, author, voteScore
     }
 }
 
-export function createPost({ id, timestamp, title, body, author, category, voteScore, deleted }) {
+
+export function savePost({ id, timestamp, title, body, author, category, voteScore, deleted }) {
     return {
         type: CREATE_POST,
         id,
@@ -44,6 +50,56 @@ export function createPost({ id, timestamp, title, body, author, category, voteS
         voteScore,
         deleted,
     }
+}
+
+export function createPost(post) {
+    console.log("post: ", post)
+    const {title, body, author, category} = post;
+    const timestamp = Date.now();
+    const newPost = {
+		title,
+		body,
+		author, 
+		category,
+		timestamp,
+		id: uuidv1(),
+		voteScore: 0,
+        commentCount: 0,
+        deleted: false
+	}
+    console.log("newPost: ", newPost)
+
+    return dispatch => {
+		return fetch(`http://localhost:3001/posts`, {headers: {'Authorization': "BasicAuth",
+			"Content-Type": "application/json"},
+			method: 'POST',
+			body: JSON.stringify(newPost)})
+			.then((res) => res.json())		
+			.then((newPost) => dispatch(savePost(newPost))).then(() => {
+                APIMethods.getPosts().then((data) => { console.log("all posts: ", data) })
+             });
+	}
+    // return (dispatch) => {
+    //     return APIMethods.createPost(newPost)
+    //         .then((newPost) => {
+    //             //console.log("newPost: ", newPost)
+    //             dispatch(savePost(newPost))
+    //         }).then(() => {
+    //             APIMethods.getPosts().then((data) => { console.log("all posts: ", data) })
+    //         })
+
+    // }
+
+
+
+    // return dispatch => {
+    // 	return fetch(`http://localhost:5001/posts`, {headers: {'Authorization': AUTHORIZATION,
+    // 		"Content-Type": "application/json"},
+    // 		method: 'POST',
+    // 		body: JSON.stringify(addNewPost)})
+    // 		.then((res) => res.json())		
+    // 		.then((newPost) => dispatch(addPost(addNewPost)));
+    // }
 }
 
 export function upvotePost({ id, voteScore }) {
