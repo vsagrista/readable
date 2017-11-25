@@ -23,8 +23,29 @@ export function saveCategories({ names }) {
     }
 }
 
+export function createComment(comment) {
+    const {parentId, body, author, parentDeleted} = comment;
+    const timestamp = Date.now();
+    const newComment = {
+        parentId,
+		body,
+		author, 
+		timestamp,
+		id: uuidv1(),
+		voteScore: 0,
+        parentDeleted
+	}
+    return (dispatch) => {
+        return APIMethods.createComment(newComment)
+            .then((newComment) => {
+                console.log('Saving comment', newComment)
+                dispatch(saveComment(newComment))
+            });
+    }
+}
 
-export function createComment({ id, parentId, timestamp, body, author, voteScore, parentDeleted }) {
+
+export function saveComment({ id, parentId, timestamp, body, author, voteScore, parentDeleted }) {
     return {
         type: CREATE_COMMENT,
         id,
@@ -34,21 +55,6 @@ export function createComment({ id, parentId, timestamp, body, author, voteScore
         author,
         voteScore,
         parentDeleted,
-    }
-}
-
-
-export function savePost({ id, timestamp, title, body, author, category, voteScore, deleted }) {
-    return {
-        type: CREATE_POST,
-        id,
-        timestamp,
-        title,
-        body,
-        author,
-        category,
-        voteScore,
-        deleted,
     }
 }
 
@@ -74,6 +80,23 @@ export function createPost(post) {
             })
     }
 }
+
+
+export function savePost({ id, timestamp, title, body, author, category, voteScore, deleted }) {
+    return {
+        type: CREATE_POST,
+        id,
+        timestamp,
+        title,
+        body,
+        author,
+        category,
+        voteScore,
+        deleted,
+    }
+}
+
+
 
 export function upvotePost({ id, voteScore }) {
     return {

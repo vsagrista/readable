@@ -41,6 +41,13 @@ fetch(`${api}/posts`, {headers: {'Authorization': 'BasicAuth',
 			method: 'POST',
 			body: JSON.stringify(post)})
 ).then((res) => res.json())
+
+export const createComment = (comment) => (
+fetch(`${api}/comments`, {headers: {'Authorization': 'BasicAuth',
+			"Content-Type": "application/json"},
+			method: 'POST',
+			body: JSON.stringify(comment)})
+).then((res) => res.json())
 			
 
 export const updatePost = (id, post) =>
