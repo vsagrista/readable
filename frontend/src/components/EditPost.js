@@ -67,7 +67,8 @@ class EditPost extends Component {
             this.showNotification(false);
         }
         setTimeout(function () {
-            this.resetForm()
+            this.resetForm();
+            this.bindPostToState(this.props.postsById[this.props.postId]);
         }.bind(this), 2000);
     }
 
