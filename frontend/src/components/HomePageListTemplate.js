@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { removePost } from '../actions';
+import { flagPostToDeleted } from '../actions';
 import * as HelperMethods from '../helpers/HelperMethods';
 var moment = require('moment');
 
 class HomePageListTemplate extends Component {
-
-    removePost = (postId) => {
-        this.props.removePost({ id: postId });
-    }
 
     render() {
         return (
@@ -33,7 +29,7 @@ class HomePageListTemplate extends Component {
                         !this.props.byId[item].deleted &&
 
                         <li className='list-group-item justify-content-between' key={item}>
-                            <button onClick={() => (this.removePost(item))} className='pull-left remove-btn'>delete</button>
+                            <button onClick={() => (this.props.flagPostToDeleted(item))} className='pull-left remove-btn'>delete</button>
                             <Link key={`list-${item}`} to={`/${this.props.type}/` + item}>
                                 {this.props.byId[item].title}
                             </Link>
@@ -59,7 +55,7 @@ function mapStateToProps({ posts }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        removePost: (data) => dispatch(removePost(data))
+        flagPostToDeleted: (postId) => dispatch(flagPostToDeleted(postId))
     }
 }
 

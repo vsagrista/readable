@@ -80,14 +80,13 @@ export const updatePost = (id, post) =>
   })
     .then((res) => res.json())
 
-export const deletePost = (id, post) =>
+export const flagPostToDeleted = (id) =>
   fetch(`${api}/posts/${id}`, {
-    method: 'POST',
+    method: 'DELETE',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ post })
+    }
   }).then(res => res.json())
 
 export const addComment = () =>

@@ -195,7 +195,14 @@ export function saveUpdatedPost({ id, timestamp, title, body, author, category, 
     }
 }
 
-export function removePost({ id }) {
+export function flagPostToDeleted(postId) {
+    return (dispatch) => {
+        APIMethods.flagPostToDeleted(postId).then((postFlaggedRemoved) =>  dispatch(removePost(postFlaggedRemoved.id))
+        )
+    }
+}
+
+export function removePost(id) {
     return {
         type: REMOVE_POST,
         id,
