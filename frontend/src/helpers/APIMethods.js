@@ -110,7 +110,6 @@ export const upvoteComment = (id, comment) =>
   }).then(res => res.json())
 
 
-
 export const deleteComment = (id, comment) =>
   fetch(`${api}/comments/${id}`, {
     method: 'PUT',

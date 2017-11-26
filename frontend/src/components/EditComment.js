@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
-import { updateComment } from '../actions';
+import { updateComment, fetchComments } from '../actions';
+import * as APIMethods from '../helpers/APIMethods';
 
 class EditComment extends Component {
 
@@ -14,16 +15,25 @@ class EditComment extends Component {
                 className: ''
             }
         }
-        this.baseState = this.state;
     }
 
     componentDidMount() {
+        if (!this.props.commentsById[this.props.id]) {
+            APIMethods.getComment(this.props.id).then((data) => this.props.fetchComments(data.parentId))
+                .then(() => this.bindCommentToForm())
+        } else {
+            this.bindCommentToForm();
+        }
+    }
+
+    bindCommentToForm = () => {
         this.setState(state => ({
             ...state,
             editedComment: {
                 ...state.editedComment,
                 ...this.props.commentsById[this.props.id]
-            }
+            },
+            notification: {}
         }))
     }
 
@@ -42,7 +52,7 @@ class EditComment extends Component {
         this.props.updateComment(this.state.editedComment);
         this.notify();
         setTimeout(function () {
-            this.resetForm();
+            this.bindCommentToForm();
         }.bind(this), 2000);
     }
 
@@ -57,10 +67,6 @@ class EditComment extends Component {
                 message
             }
         }))
-    }
-
-    resetForm = () => {
-        this.setState(this.baseState);
     }
 
     render() {
@@ -96,7 +102,8 @@ function mapStateToProps({ comments }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        updateComment: (data) => dispatch(updateComment(data))
+        updateComment: (data) => dispatch(updateComment(data)),
+        fetchComments: (postId) => dispatch(fetchComments(postId))
     }
 }
 

@@ -155,6 +155,7 @@ export function saveSortedCommentsIds({ allIds, sortedBy }) {
 
 export function updateComment(comment) {
     return (dispatch) => {
+        console.log(comment.id, comment)
         APIMethods.updateComment(comment.id, comment).then((data) => {
             console.log("Comment edited: ", data);
             dispatch(saveUpdatedComment(data))})
