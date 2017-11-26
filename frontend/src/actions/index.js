@@ -31,6 +31,14 @@ export function fetchCategories() {
     }
 }
 
+export function fetchComments(postId) {
+    return (dispatch) => {
+        return APIMethods.getComments(postId).then((data) => { 
+            data.map(comment => dispatch(saveComment(comment)))
+        })
+    }
+}
+
 export function createComment(comment) {
     const { parentId, body, author, parentDeleted } = comment;
     const timestamp = Date.now();
@@ -113,9 +121,6 @@ export function fetchPosts() {
     }
 }
 
-
-
-
 export function upvotePost({ id, voteScore }) {
     return {
         type: UPVOTE_POST,
@@ -147,7 +152,16 @@ export function saveSortedCommentsIds({ allIds, sortedBy }) {
         sortedBy
     }
 }
-export function updateComment({ id, parentId, timestamp, body, author, voteScore, parentDeleted }) {
+
+export function updateComment(comment) {
+    return (dispatch) => {
+        APIMethods.updateComment(comment.id, comment).then((data) => {
+            console.log("Comment edited: ", data);
+            dispatch(saveUpdatedComment(data))})
+    }
+}
+
+export function saveUpdatedComment({ id, parentId, timestamp, body, author, voteScore, parentDeleted }) {
     return {
         type: UPDATE_COMMENT,
         id,

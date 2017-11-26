@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
-import { saveSortedCommentsIds, createComment } from '../actions';
+import { saveSortedCommentsIds, createComment, fetchComments } from '../actions';
 import Comment from './Comment';
 import Post from './Post';
 import CreateComment from './CreateComment';
 import * as HelperMethods from '../helpers/HelperMethods';
+import * as APIMethods from '../helpers/APIMethods';
 
 
 class SinglePost extends Component {
+
+    componentDidMount() {
+        this.props.fetchComments(this.props.id);
+    }
 
     sortItemsBy = (option) => {
         return HelperMethods.sortIdsBy(this.props.commentsById, option)
@@ -32,14 +37,14 @@ class SinglePost extends Component {
                         {this.props.commentsById &&
                             this.props.allCommentsIds.map((id) => {
                                 return !this.props.commentsById[id].deleted &&
-                                 this.props.commentsById[id].parentId === this.props.id && 
-                                <Comment key={`comment-${id}`} comment={this.props.commentsById[id]} />
+                                    this.props.commentsById[id].parentId === this.props.id &&
+                                    <Comment key={`comment-${id}`} comment={this.props.commentsById[id]} />
                             })
-                         } 
+                        }
                     </div>
                     <div className='sort-btn-div'>
-                        {this.props.allCommentsIds.length > 1 && 
-                         this.enableUpVote() &&
+                        {this.props.allCommentsIds.length > 1 &&
+                            this.enableUpVote() &&
                             <button onClick={() => {
                                 this.props.saveSortedCommentsIds({ allIds: this.sortItemsBy('voteScore'), commentsSortedBy: 'voteScore' });
                             }}>Sort by votes</button>}
@@ -64,7 +69,8 @@ function mapStateToProps({ comments, posts }) {
 function mapDispatchToProps(dispatch) {
     return {
         saveSortedCommentsIds: (data) => dispatch(saveSortedCommentsIds(data)),
-        createComment: (data) => dispatch(createComment(data))
+        createComment: (data) => dispatch(createComment(data)),
+        fetchComments: (postId) => dispatch(fetchComments(postId))
     }
 }
 

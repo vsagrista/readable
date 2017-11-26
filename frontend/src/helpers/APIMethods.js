@@ -28,8 +28,8 @@ export const getPost = (id) =>
     .then(res => res.json())
 
 export const getComments = (postId) =>
-  fetch(`${api}/posts/${postId}/comments`, { headers })
-    .then(res => res.json())
+  fetch(`http://localhost:3001/posts/${postId}/comments`, { headers })
+    .then((res) => res.json())
 
 export const getComment = (id) =>
   fetch(`${api}/comments/${id}`, { headers })
@@ -69,6 +69,17 @@ export const updatePost = (id, post) =>
   })
     .then((res) => res.json())
 
+  export const updateComment = (id, comment) =>
+  fetch(`${api}/comments/${id}`, {
+    headers: {
+      'Authorization': 'BasicAuth',
+      "Content-Type": "application/json"
+    },
+    method: 'PUT',
+    body: JSON.stringify(comment)
+  })
+    .then((res) => res.json())
+
 export const deletePost = (id, post) =>
   fetch(`${api}/posts/${id}`, {
     method: 'POST',
@@ -98,15 +109,7 @@ export const upvoteComment = (id, comment) =>
     body: JSON.stringify({ comment })
   }).then(res => res.json())
 
-export const updateComment = (id, comment) =>
-  fetch(`${api}/comments/${id}`, {
-    method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ comment })
-  }).then(res => res.json())
+
 
 export const deleteComment = (id, comment) =>
   fetch(`${api}/comments/${id}`, {
