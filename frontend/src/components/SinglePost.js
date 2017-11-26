@@ -11,40 +11,61 @@ import * as APIMethods from '../helpers/APIMethods';
 
 class SinglePost extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+            commentsEnabled: false
+        }
+    }
+
     componentDidMount() {
         this.props.fetchComments(this.props.id);
+        this.setState({
+            commentsEnabled: this.commentsAreEnabled()
+        });
     }
 
     sortItemsBy = (option) => {
         return HelperMethods.sortIdsBy(this.props.commentsById, option)
     }
 
-    enableUpVote = () => {
+    commentsAreEnabled = () => {
         let totalComments = [];
         this.props.allCommentsIds.map(id => !this.props.commentsById[id].deleted && totalComments.push(id))
-        return totalComments.length > 1;
+        return totalComments.length > 1 && this.props.postsById[this.props.id];
     }
 
     render() {
         return (
             <div className='display-wrapper'>
-                Single Post
-                {this.props.postsById[this.props.id] &&
+            
+            {/*List Post*/}
+                {this.props.postsById[this.props.id] && 
+                !this.props.postsById[this.props.id].deleted &&
                     <Post post={this.props.postsById[this.props.id]} singlePostView='true'></Post>}
                 <div>
+
+             {/*Create Comment*/}
+                {this.props.postsById[this.props.id] &&
+                !this.props.postsById[this.props.id].deleted &&
                     <CreateComment parentId={this.props.id} postDeleted={this.props.postDeleted}></CreateComment>
+                }
+
+            {/*List Comments*/}
                     <div key='list-comments' className='list-comments'>
                         {this.props.commentsById &&
-                            this.props.allCommentsIds.map((id) => {
-                                return !this.props.commentsById[id].deleted &&
+                            this.props.allCommentsIds.map((id, index) => {
+                                return !this.props.commentsById[id].parentDeleted &&
                                     this.props.commentsById[id].parentId === this.props.id &&
-                                    <Comment key={`comment-${id}`} comment={this.props.commentsById[id]} />
+                                    <Comment key={`comment-${id}-${index}`} comment={this.props.commentsById[id]} />
                             })
                         }
                     </div>
+
+            {/*Sort Comments*/}
                     <div className='sort-btn-div'>
                         {this.props.allCommentsIds.length > 1 &&
-                            this.enableUpVote() &&
+                            this.state.commentsEnabled &&
                             <button onClick={() => {
                                 this.props.saveSortedCommentsIds({ allIds: this.sortItemsBy('voteScore'), commentsSortedBy: 'voteScore' });
                             }}>Sort by votes</button>}

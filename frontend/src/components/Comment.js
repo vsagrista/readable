@@ -33,9 +33,6 @@ class Comment extends Component {
                     <li key={this.props.comment.voteScore}>
                         Vote Score: {this.props.comment.voteScore}
                     </li>
-                    <li key={this.props.comment.category}>
-                        Category: {this.props.comment.category}
-                    </li>
                     <li key={this.props.comment.timestamp}>
                         Date: {moment(this.props.comment.timestamp).format("DD/MM/YYYY")}
                     </li>
