@@ -57,6 +57,7 @@ class SinglePost extends Component {
                             this.props.allCommentsIds.map((id, index) => {
                                 return !this.props.commentsById[id].parentDeleted &&
                                     this.props.commentsById[id].parentId === this.props.id &&
+                                    !this.props.commentsById[id].deleted &&
                                     <Comment key={`comment-${id}-${index}`} comment={this.props.commentsById[id]} />
                             })
                         }

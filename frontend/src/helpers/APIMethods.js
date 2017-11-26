@@ -89,6 +89,15 @@ export const flagPostToDeleted = (id) =>
     }
   }).then(res => res.json())
 
+export const flagCommentDeleted = (id) =>
+  fetch(`${api}/comments/${id}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+
 export const addComment = () =>
   fetch(`${api}/comments`, {
     method: 'POST',
@@ -101,17 +110,6 @@ export const addComment = () =>
 export const upvoteComment = (id, comment) =>
   fetch(`${api}/comments/${id}`, {
     method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ comment })
-  }).then(res => res.json())
-
-
-export const deleteComment = (id, comment) =>
-  fetch(`${api}/comments/${id}`, {
-    method: 'PUT',
     headers: {
       ...headers,
       'Content-Type': 'application/json'

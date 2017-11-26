@@ -209,7 +209,14 @@ export function removePost(id) {
     }
 }
 
-export function removeComment({ id }) {
+export function flagCommentDeleted(commentId) {
+    return (dispatch) => {
+        APIMethods.flagCommentDeleted(commentId).then((commentFlaggedRemoved) =>  dispatch(removeComment(commentFlaggedRemoved.id)))
+    }
+}
+
+
+export function removeComment(id) {
     return {
         type: REMOVE_COMMENT,
         id,

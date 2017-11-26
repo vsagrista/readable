@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { upvoteComment, removeComment } from '../actions';
+import { upvoteComment, flagCommentDeleted } from '../actions';
 import * as HelperMethods from '../helpers/HelperMethods';
 
 var moment = require('moment');
@@ -47,7 +47,7 @@ class Comment extends Component {
                         }
                         } className='btn btn-default'><i className='glyphicon glyphicon-hand-right'></i></button>
                         <button title='remove' onClick={(e) => {
-                            this.props.removeComment({id: this.props.comment.id})
+                            this.props.flagCommentDeleted(this.props.comment.id)
                         }} className='btn btn-danger'>X</button>
                 </ul>
                 <hr></hr>
@@ -68,7 +68,7 @@ function mapStateToProps({ comments }) {
 function mapDispatchToProps(dispatch) {
     return {
         upvoteComment: (data) => dispatch(upvoteComment(data)),
-        removeComment: (data) => dispatch(removeComment(data))
+        flagCommentDeleted: (data) => dispatch(flagCommentDeleted(data))
     }
 }
 
