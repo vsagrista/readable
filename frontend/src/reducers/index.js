@@ -4,8 +4,8 @@ import {
     SAVE_SORTED_IDS,
     SAVE_SORTED_COMMENTS_IDS,
     SAVE_CATEGORY,
-    UPVOTE_POST,
-    UPVOTE_COMMENT,
+    VOTE_POST,
+    VOTE_COMMENT,
     UPDATE_COMMENT,
     UPDATE_POST,
     REMOVE_POST,
@@ -63,7 +63,7 @@ function posts(state = initialPostsState, action) {
                 allIds: action.allIds,
                 sortedBy: action.sortedBy
             }
-        case UPVOTE_POST:
+        case VOTE_POST:
             delete action.type;
             return {
                 ...state,
@@ -114,7 +114,7 @@ function comments(state = initialCommentsState, action) {
                 },
                 allIds: [...state.allIds, action.id]
             }
-        case UPVOTE_COMMENT:
+        case VOTE_COMMENT:
             delete action.type;
             return {
                 ...state,

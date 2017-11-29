@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { upvoteComment, flagCommentDeleted } from '../actions';
+import { flagCommentDeleted, voteComment } from '../actions';
 import * as HelperMethods from '../helpers/HelperMethods';
 
 var moment = require('moment');
@@ -13,16 +13,17 @@ class Comment extends Component {
         return HelperMethods.sortIdsBy(this.props.commentsById, option)
     }
 
-    upvote = (type, id, e) => {
+    saveVote = (id, option,  e) => {
         e.preventDefault();
-        let voteScore = this.props.commentsById[id].voteScore + 1;
-        this.props.upvoteComment({ id, voteScore })
-        this.sortItemsBy(this.props.commentsSortedBy)
+        this.props.voteComment(id, option);
+        this.sortItemsBy(this.props.commentsSortedBy);
     }
 
     render() {
         return (
-            <div>
+            
+            <div key={this.props.key}>
+                {console.log('this.props.key', this.props)}
                 <ul key={this.props.comment.id}>
                     <li key={this.props.comment.body}>
                         Body: {this.props.comment.body}
@@ -43,9 +44,13 @@ class Comment extends Component {
                         
                     </li>
                         <button title='upvote' onClick={(e) => {
-                            this.upvote('comment', this.props.comment.id, e)
+                            this.saveVote(this.props.comment.id, {option: 'upVote'}, e)
                         }
                         } className='btn btn-default'><i className='glyphicon glyphicon-hand-right'></i></button>
+                        <button title='upvote' onClick={(e) => {
+                            this.saveVote(this.props.comment.id, {option: 'downVote'}, e)
+                        }
+                        } className='btn btn-default'><i className='glyphicon glyphicon-thumbs-down'></i></button>
                         <button title='remove' onClick={(e) => {
                             this.props.flagCommentDeleted(this.props.comment.id)
                         }} className='btn btn-danger'>X</button>
@@ -67,7 +72,7 @@ function mapStateToProps({ comments }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        upvoteComment: (data) => dispatch(upvoteComment(data)),
+        voteComment: (id, option) => dispatch(voteComment(id, option)),
         flagCommentDeleted: (data) => dispatch(flagCommentDeleted(data))
     }
 }

@@ -60,6 +60,7 @@ class App extends Component {
                                 </div>
                             </div>
                         </div>
+                        
                         <div className='root-posts'>
                             <h2 className='header-main'>All Posts</h2>
                             <HomePageListTemplate key='template-posts' type='post' items={this.props.allPostsId} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
@@ -84,8 +85,8 @@ class App extends Component {
                     </div>
                 )} />
                 <div>
-                    <Route exact path='/category/:name' render={(props) => (
-                        <Category name={props.match.params.name} />
+                    <Route exact path='/:category' render={(props) => (
+                        <Category name={props.match.params.category} />
                     )} />
                     <Route exact path='/createpost' render={() => (
                         <CreatePost />

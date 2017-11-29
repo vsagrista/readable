@@ -6,7 +6,7 @@ import Comment from './Comment';
 import Post from './Post';
 import CreateComment from './CreateComment';
 import * as HelperMethods from '../helpers/HelperMethods';
-import * as APIMethods from '../helpers/APIMethods';
+
 
 
 class SinglePost extends Component {
@@ -19,10 +19,11 @@ class SinglePost extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchComments(this.props.id);
-        this.setState({
-            commentsEnabled: this.commentsAreEnabled()
-        });
+        this.props.fetchComments(this.props.id).then(() =>
+            this.setState({
+                commentsEnabled: this.commentsAreEnabled()
+            })
+        );
     }
 
     sortItemsBy = (option) => {
@@ -32,44 +33,49 @@ class SinglePost extends Component {
     commentsAreEnabled = () => {
         let totalComments = [];
         this.props.allCommentsIds.map(id => !this.props.commentsById[id].deleted && totalComments.push(id))
-        return totalComments.length > 1 && this.props.postsById[this.props.id];
+        return totalComments.length > 1;
     }
 
     render() {
         return (
             <div className='display-wrapper'>
-            
-            {/*List Post*/}
-                {this.props.postsById[this.props.id] && 
-                !this.props.postsById[this.props.id].deleted &&
+
+                {/*List Post*/}
+                {this.props.postsById[this.props.id] &&
+                    !this.props.postsById[this.props.id].deleted &&
                     <Post post={this.props.postsById[this.props.id]} singlePostView='true'></Post>}
                 <div>
 
-             {/*Create Comment*/}
-                {this.props.postsById[this.props.id] &&
-                !this.props.postsById[this.props.id].deleted &&
-                    <CreateComment parentId={this.props.id} postDeleted={this.props.postDeleted}></CreateComment>
-                }
+                    {/*Create Comment*/}
+                    {this.props.postsById[this.props.id] &&
+                        !this.props.postsById[this.props.id].deleted &&
+                        <CreateComment parentId={this.props.id} postDeleted={this.props.postDeleted}></CreateComment>
+                    }
 
-            {/*List Comments*/}
+                    {/*List Comments*/}
                     <div key='list-comments' className='list-comments'>
                         {this.props.commentsById &&
                             this.props.allCommentsIds.map((id, index) => {
                                 return !this.props.commentsById[id].parentDeleted &&
                                     this.props.commentsById[id].parentId === this.props.id &&
                                     !this.props.commentsById[id].deleted &&
-                                    <Comment key={`comment-${id}-${index}`} comment={this.props.commentsById[id]} />
+                                    
+                                        <Comment key={index} comment={this.props.commentsById[id]} />
+                                   
                             })
                         }
                     </div>
 
-            {/*Sort Comments*/}
+                    {/*Sort Comments*/}
                     <div className='sort-btn-div'>
-                        {this.props.allCommentsIds.length > 1 &&
+                        {
+                            this.props.allCommentsIds.length > 1 &&
                             this.state.commentsEnabled &&
+                            this.props.postsById[this.props.id] &&
                             <button onClick={() => {
                                 this.props.saveSortedCommentsIds({ allIds: this.sortItemsBy('voteScore'), commentsSortedBy: 'voteScore' });
-                            }}>Sort by votes</button>}
+                            }}>Sort by votes</button>
+                        }
                     </div>
                 </div>
 

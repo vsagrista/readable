@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
-import { upvotePost } from '../actions';
+import { votePost } from '../actions';
 import { Link } from 'react-router-dom';
 
 var moment = require('moment');
 
 class Post extends Component {
 
-    upvote = (id, e) => {
+    saveVote = (id, option, e) => {
         e.preventDefault();
-        let voteScore = this.props.postsById[id].voteScore + 1;
-        this.props.upvotePost({ id, voteScore })
+        this.props.votePost(id, option);
     }
 
     render() {
@@ -41,7 +40,12 @@ class Post extends Component {
                 {
                     this.props.singlePostView &&
                     <div>
-                        <button title='Upvote' onClick={(e) => { this.upvote(this.props.post.id, e) }} className='btn btn-default'><i className='glyphicon glyphicon-hand-right'></i></button>
+                        <button title='Upvote' onClick={(e) => {
+                            this.saveVote(this.props.post.id, { option: 'upVote' }, e)
+                        }
+                        } className='btn btn-default'><i className='glyphicon glyphicon-hand-right'></i></button>
+                        <button title='Upvote' onClick={(e) => { 
+                            this.saveVote(this.props.post.id, { option: 'downVote' }, e) }} className='btn btn-default'><i className='glyphicon glyphicon-thumbs-down'></i></button>
                         <Link to={`/editpost/${this.props.post.id}`}>
                             <button className='btn btn-info' title='Edit'><i className='glyphicon glyphicon-pencil'></i></button>
                         </Link>
@@ -64,7 +68,7 @@ function mapStateToProps({ posts }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        upvotePost: (data) => dispatch(upvotePost(data))
+        votePost: (id, option) => dispatch(votePost(id, option))
     }
 }
 
