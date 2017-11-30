@@ -23,17 +23,13 @@ class Category extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchCategories();
-        this.props.fetchPosts()
-            .then(() => {
-                APIMethods.getPostsByCategory(this.props.name).then((data) => {
-                    let postsIds = []
-                    data.map(post => (
-                        postsIds.push(post.id)
-                    ));
-                    this.setState({ postsIds: postsIds });
-                })
-            })
+        APIMethods.getPostsByCategory(this.props.name).then((data) => {
+            let postsIds = []
+            data.map(post => (
+                postsIds.push(post.id)
+            ));
+            this.setState({ postsIds: postsIds });
+        })
     }
 
     render() {
@@ -44,7 +40,7 @@ class Category extends Component {
                     this.state.postsIds.map((id, index) => {
                         return (
                             this.props.postsById[id] &&
-                            <div key={id}>                             
+                            <div key={id}>
                                 <HomePageListTemplate key={index} type='post' items={this.state.postsIds} allIds={this.state.postsIds} byId={this.props.postsById}></HomePageListTemplate>
                             </div>
                         )
