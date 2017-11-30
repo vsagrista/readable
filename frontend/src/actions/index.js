@@ -32,9 +32,14 @@ export function fetchCategories() {
 }
 
 export function fetchComments(postId) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         return APIMethods.getComments(postId).then((data) => {
-            data.map(comment => dispatch(saveComment(comment)))
+            data.map(comment => {
+                let state = getState()
+                if (!state.comments.allIds.includes(comment.id)) {
+                    dispatch(saveComment(comment))
+                }
+            })
         })
     }
 }

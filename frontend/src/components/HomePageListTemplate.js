@@ -15,7 +15,6 @@ class HomePageListTemplate extends Component {
     }
 
     render() {
-        console.log('key: ', `list-${this.props.type}`)
         return (
             <ul key={`list-${this.props.type}`} className='list-group'>
                 {this.props.items.map(item => (

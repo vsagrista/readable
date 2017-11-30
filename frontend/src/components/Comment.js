@@ -23,7 +23,6 @@ class Comment extends Component {
         return (
             
             <div key={this.props.key}>
-                {console.log('this.props.key', this.props)}
                 <ul key={this.props.comment.id}>
                     <li key={this.props.comment.body}>
                         Body: {this.props.comment.body}
