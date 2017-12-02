@@ -1,6 +1,6 @@
 # Readable App
 
-Welcome to Readable! This is an application with the goal of learning the core concepts of Redux. It's build using the create-react-app toolset.
+Welcome to Readable! This is an application with the goal of learning the core concepts of Redux. It's built using the create-react-app toolset.
 <br>
 You can create posts, comments, like them, delete them, sort them by vote, date and so on. Think of a "mini-reddit".
 
