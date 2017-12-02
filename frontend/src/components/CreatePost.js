@@ -88,18 +88,21 @@ class CreatePost extends Component {
                         placeholder="title"
                         value={this.state.newPost.title}
                         onChange={e => this.handleInputChange({ title: e.target.value })}
+                        required
                     />
                     <input key="body"
                         name="body"
                         placeholder="body"
                         value={this.state.newPost.body}
                         onChange={e => this.handleInputChange({ body: e.target.value })}
+                        required
                     />
                     <input key="author"
                         name="author"
                         placeholder="author"
                         value={this.state.newPost.author}
                         onChange={e => this.handleInputChange({ author: e.target.value })}
+                        required
                     />
                     <p>Category</p>
                     <select value={this.state.newPost.category}

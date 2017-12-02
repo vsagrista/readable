@@ -63,12 +63,14 @@ class CreateComment extends Component {
                             placeholder="author"
                             value={this.state.newComment.author}
                             onChange={e => this.handleInputChange({ author: e.target.value })}
+                            required
                         />
                         <input key="body"
                             name="body"
                             placeholder="body"
                             value={this.state.newComment.body}
                             onChange={e => this.handleInputChange({ body: e.target.value })}
+                            required
                         />
                         <button type='submit'>Add</button>
                     </form>
