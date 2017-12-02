@@ -16,53 +16,58 @@ class HomePageListTemplate extends Component {
 
     render() {
         return (
-            <ul key={`list-${this.props.type}`} className='list-group'>
-                {this.props.items.map(item => (
-                    this.props.type === 'category' ?
-                        <li className='list-group-item justify-content-between' key={item}>
-                            <Link key={`list-${item}`} to={`/${item}`}>
-                                {item.toUpperCase()}
-                            </Link>
-                            <span key={`span-${item}`} className="badge badge-default badge-pill">
-                                {
-                                    HelperMethods.countPostsByCategory(this.props.allIds, this.props.byId, item)
-                                }
-                            </span>
-                        </li>
+                <ul key={`list-${this.props.type}`} className='list-group'>
+                    {this.props.items.map(item => (
+                        this.props.type === 'category' ?
+                            <li className='list-group-item justify-content-between' key={item}>
+                                <Link key={`list-${item}`} to={`/${item}`}>
+                                   - {item.toUpperCase()} -
+                                </Link>
+                                <span key={`span-${item}`} className="badge badge-default badge-pill">
+                                    {
+                                        HelperMethods.countPostsByCategory(this.props.allIds, this.props.byId, item)
+                                    }
+                                </span>
+                            </li>
 
-                        :
+                            :
 
-                        !this.props.byId[item].deleted &&
+                            this.props.byId[item] &&
+                            !this.props.byId[item].deleted &&
 
-                        <li className='list-group-item justify-content-between' key={item}>
-                        {/* Delete */}
-                            <button onClick={() => (this.props.flagPostToDeleted(item))} className='pull-left remove-btn'>delete</button>
-                            <Link to={`/editpost/${item}`}>
-                                <button className='btn btn-info' title='Edit'><i className='glyphicon glyphicon-pencil'></i></button>
-                            </Link>
-                        {/* Vote */}
-                            <button title='Upvote' onClick={(e) => {
-                                this.saveVote(item, { option: 'upVote' }, e)
-                            }
-                            } className='btn btn-default'><i className='glyphicon glyphicon-hand-right'></i></button>
-                            <button title='Upvote' onClick={(e) => {
-                                this.saveVote(item, { option: 'downVote' }, e)
-                            }} className='btn btn-default'><i className='glyphicon glyphicon-thumbs-down'></i></button>
-                         {/* Edit */}
-                            <Link key={`list-${item}`} to={`/${this.props.type}/` + item}>
-                                {this.props.byId[item].title}
-                            </Link>
-                        {/* VoteScore */}
-                            <span key={`span-${item}`} className="badge badge-default badge-pill">
-                                {
-                                    this.props.sortedBy === 'voteScore'
-                                        ? this.props.byId[item].voteScore
-                                        : moment(this.props.byId[item].timestamp).format('DD/MM/YYYY')
-                                }
-                            </span>
-                        </li>
-                ))}
-            </ul>
+                            <li className='list-group-item justify-content-between' key={item}>
+                                {/* Link to item */}
+                                <Link className='text-uppercase' key={`list-${item}`} to={`/${this.props.byId[item].category}/` + item}>
+                                    {this.props.byId[item].title}
+                                </Link>
+
+                                {/* VoteScore */}
+                                <span key={`span-${item}`} className="badge badge-default badge-pill">
+                                    {
+                                        this.props.sortedBy === 'voteScore'
+                                            ? this.props.byId[item].voteScore
+                                            : moment(this.props.byId[item].timestamp).format('DD/MM/YYYY')
+                                    }
+                                </span>
+                                <div className='post-settings'>
+                                    {/* Delete */}
+                                    <button onClick={() => (this.props.flagPostToDeleted(item))} className='remove-btn'>delete</button>
+                                    {/* Edit */}
+                                    <Link to={`/editpost/${item}`}>
+                                        <button className='btn btn-default edit-btn' title='Edit'><i className='glyphicon glyphicon-pencil'></i></button>
+                                    </Link>
+                                    {/* Vote */}
+                                    <button title='Upvote' onClick={(e) => {
+                                        this.saveVote(item, { option: 'upVote' }, e)
+                                    }
+                                    } className='btn btn-default'><i className='glyphicon glyphicon-hand-right upvote-btn'></i></button>
+                                    <button title='Downvote' onClick={(e) => {
+                                        this.saveVote(item, { option: 'downVote' }, e)
+                                    }} className='btn btn-default'><i className='glyphicon glyphicon-thumbs-down downvote-btn'></i></button>
+                                </div>
+                            </li>
+                    ))}
+                </ul>
         );
     }
 }

@@ -38,7 +38,7 @@ class SinglePost extends Component {
 
     render() {
         return (
-            <div className='display-wrapper'>
+            <div className='container-fluid'>
 
                 {/*List Post*/}
                 {this.props.postsById[this.props.id] &&

@@ -40,19 +40,19 @@ class App extends Component {
 
     render() {
         return (
-            <div>
+            <div className='container-fluid'>
                 <nav>
                     <Link to='/' className="navbar-brand">
                         <p><i className='glyphicon glyphicon-home'></i>Home</p>
                     </Link>
-                    <Link to='/createpost' className="navbar-brand" href="#">
+                    <Link to='/posts/createpost' className="navbar-brand" href="#">
                         <p><i className='glyphicon glyphicon-list-alt'></i>New Post</p>
                     </Link>
                 </nav>
                 <Route exact path='/' render={() => (
                     <div className="App">
                         <div className='root-categories'>
-                            <h2 className='header-main'>Categories</h2>
+                            <h4 className='header-main'>Categories</h4>
                             <HomePageListTemplate key='template-categories' type='category' items={this.props.categories} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                             <div className='sort-btn-wrapper'>
                                 <div className='sort-info'>
@@ -62,10 +62,10 @@ class App extends Component {
                         </div>
                         
                         <div className='root-posts'>
-                            <h2 className='header-main'>All Posts</h2>
+                            <h4 className='header-main'>All Posts</h4>
                             <HomePageListTemplate key='template-posts' type='post' items={this.props.allPostsId} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                             <div className='sort-btn-wrapper'>
-                                <button onClick={() => {
+                                <button className='btn btn-default' onClick={() => {
                                         let option = this.props.sortedBy === 'voteScore' 
                                         ? 'timestamp' 
                                         : 'voteScore';
@@ -88,13 +88,13 @@ class App extends Component {
                     <Route exact path='/:category' render={(props) => (
                         <Category name={props.match.params.category} />
                     )} />
-                    <Route exact path='/createpost' render={() => (
+                    <Route exact path='/posts/createpost' render={() => (
                         <CreatePost />
                     )} />
                     <Route exact path='/editpost/:postid' render={(props) => (
                         <EditPost postId={props.match.params.postid} />
                     )} />
-                    <Route exact path="/post/:id" render={(props) => (
+                    <Route exact path="/:category/:id" render={(props) => (
                         <SinglePost id={props.match.params.id} />
                     )} />
                     <Route exact path="/comments/:id" render={(props) => (

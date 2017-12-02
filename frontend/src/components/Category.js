@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {
     savePost,
     saveSortedIds,
     fetchCategories,
     fetchPosts
 } from '../actions';
-import Post from './Post';
+
 import * as HerperMethods from '../helpers/HelperMethods'
 import * as APIMethods from '../helpers/APIMethods';
+
 import HomePageListTemplate from './HomePageListTemplate';
 
 class Category extends Component {
@@ -34,17 +34,13 @@ class Category extends Component {
 
     render() {
         return (
-            <div className='display-wrapper'>
-                <h2 className='header-main'>{HerperMethods.capitalizeFirstLetter(this.props.name)} Category</h2>
+            <div className='container-fluid'>
+                <h5 className='header-main'>{HerperMethods.capitalizeFirstLetter(this.props.name)} Category</h5>
                 {
-                    this.state.postsIds.map((id, index) => {
-                        return (
-                            this.props.postsById[id] &&
-                            <div key={id}>
-                                <HomePageListTemplate key={index} type='post' items={this.state.postsIds} allIds={this.state.postsIds} byId={this.props.postsById}></HomePageListTemplate>
-                            </div>
-                        )
-                    })
+                    this.props.postsById &&
+                    <div key='cat-posts'>
+                        <HomePageListTemplate key='cat-posts-component' type='post' items={this.state.postsIds} allIds={this.state.postsIds} byId={this.props.postsById}></HomePageListTemplate>
+                    </div>
                 }
             </div>
         );

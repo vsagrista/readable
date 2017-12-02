@@ -1,5 +1,5 @@
 * {
-  font-family: monospace;
+  font-family: serif;
 }
 
 .App {
@@ -8,6 +8,17 @@
 
 .App button {
   border: none;
+  margin: 2px;
+  font-size: 10px;
+}
+.edit-btn {
+  color: #47b0d5
+}
+.upvote-btn {
+  color: #006400;
+}
+.downvote-btn {
+  color: #f40b0b;
 }
 
 .remove-btn {
@@ -38,7 +49,7 @@
 nav {
   display: block;
   width: 100%;
-  background: #99c3d4;
+  background: #c9d0d2;
   height: 50px;
 }
 nav p {
@@ -48,8 +59,39 @@ nav i {
   padding-right: 5px;
 }
 
+.header-main {
+  text-transform: uppercase;
+  color: black;
+  text-decoration: overline;
+}
+
+.post-settings {
+  background: #c9d0d2;
+  margin: 10px -15px -10px -15px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.post-settings > button {
+  margin: 2px;
+  font-size: 10px;
+}
+
+.list-group-item > a {
+  margin-right: -15px;
+}
+
 .sort-btn-wrapper {
   position: relative;
+  height: 40px;
+}
+
+.sort-btn-wrapper button {
+  font-size: 20px;
 }
 
 .sort-info {
@@ -65,12 +107,29 @@ nav i {
   to { transform: rotate(360deg); }
 }
 
-.display-wrapper {
-  padding: 30px;
+/*Bootstap overrides*/
+
+.container-fluid {
+    padding-right: 2px;
+    padding-left: 2px;
 }
 
-.header-main {
-  text-transform: uppercase;
+ul.nav li a, ul.nav li a:visited {
+    color: black !important;
 }
+
+ul.nav li a:hover, ul.nav li a:active {
+    color: black !important;
+}
+
+ul.nav li.active a {
+    color: black !important;
+}
+
+a {
+  color: black !important;
+}
+
+
 
 

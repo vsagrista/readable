@@ -39,6 +39,7 @@ export function fetchComments(postId) {
                 if (!state.comments.allIds.includes(comment.id)) {
                     dispatch(saveComment(comment))
                 }
+                return true;
             })
         })
     }

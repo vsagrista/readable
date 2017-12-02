@@ -54,28 +54,25 @@ class CreateComment extends Component {
 
     render() {
         return (
-            <div>
-                <div>
-                    <h3>Add comment</h3>
-                    <form onSubmit={this.saveComment}>
-                        <input key="author"
-                            name="author"
-                            placeholder="author"
-                            value={this.state.newComment.author}
-                            onChange={e => this.handleInputChange({ author: e.target.value })}
-                            required
-                        />
-                        <input key="body"
-                            name="body"
-                            placeholder="body"
-                            value={this.state.newComment.body}
-                            onChange={e => this.handleInputChange({ body: e.target.value })}
-                            required
-                        />
-                        <button type='submit'>Add</button>
-                    </form>
-                </div>
-
+            <div className='container-fluid'>
+                <h5 className='text-uppercase'>Add comment</h5>
+                <form onSubmit={this.saveComment}>
+                    <input key="author"
+                        name="author"
+                        placeholder="author"
+                        value={this.state.newComment.author}
+                        onChange={e => this.handleInputChange({ author: e.target.value })}
+                        required
+                    />
+                    <input key="body"
+                        name="body"
+                        placeholder="body"
+                        value={this.state.newComment.body}
+                        onChange={e => this.handleInputChange({ body: e.target.value })}
+                        required
+                    />
+                    <button type='submit'>Add</button>
+                </form>
             </div>
         )
     }

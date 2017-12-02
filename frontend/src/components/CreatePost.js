@@ -80,8 +80,8 @@ class CreatePost extends Component {
 
     render() {
         return (
-            <div className='display-wrapper'>
-                <h3>Create new post</h3>
+            <div className='container-fluid'>
+                <h5 className='text-uppercase'>Create new post</h5>
                 <form onSubmit={this.savePost}>
                     <input key="title"
                         name="title"
