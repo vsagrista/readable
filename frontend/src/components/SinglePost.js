@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
-import { saveSortedCommentsIds, createComment, fetchComments } from '../actions';
+import { saveSortedCommentsIds, createComment, fetchComments, flagPostToDeleted } from '../actions';
 import Comment from './Comment';
 import Post from './Post';
 import CreateComment from './CreateComment';
+import NotFound from './NotFound';
 import * as HelperMethods from '../helpers/HelperMethods';
+import { Redirect } from 'react-router'
 
 
 
@@ -14,7 +16,8 @@ class SinglePost extends Component {
     constructor() {
         super();
         this.state = {
-            commentsEnabled: false
+            commentsEnabled: false,
+            postDeleted: false
         }
     }
 
@@ -24,6 +27,13 @@ class SinglePost extends Component {
                 commentsEnabled: this.commentsAreEnabled()
             })
         );
+    }
+
+    deletePost = (postId) => {
+        this.props.flagPostToDeleted(postId)
+        this.setState({
+            postDeleted: true
+        });
     }
 
     sortItemsBy = (option) => {
@@ -37,50 +47,56 @@ class SinglePost extends Component {
     }
 
     render() {
-        return (
-            <div className='container-fluid'>
-
+        this.props.postsById[this.props.id] && console.log(this.props.postsById[this.props.id])
+        if (this.state.postDeleted) {
+            return <Redirect to='/' />
+        } else if (this.props.postsById[this.props.id] &&
+            !this.props.postsById[this.props.id].deleted) {
+                return (
+                <div className='container-fluid'>
                 {/*List Post*/}
-                {this.props.postsById[this.props.id] &&
-                    !this.props.postsById[this.props.id].deleted &&
-                    <Post post={this.props.postsById[this.props.id]} singlePostView='true'></Post>}
-                <div>
+                    <Post post={this.props.postsById[this.props.id]} singlePostView='true'></Post>
+                {/* Delete */}
+                    <button onClick={() => (this.deletePost(this.props.id))} className='remove-btn'>delete</button>
+                    <div>
 
-                    {/*Create Comment*/}
-                    {this.props.postsById[this.props.id] &&
-                        !this.props.postsById[this.props.id].deleted &&
-                        <CreateComment parentId={this.props.id} postDeleted={this.props.postDeleted}></CreateComment>
-                    }
+                        {/*Create Comment*/}
+                        {this.props.postsById[this.props.id] &&
+                            !this.props.postsById[this.props.id].deleted &&
+                            <CreateComment parentId={this.props.id} postDeleted={this.props.postDeleted}></CreateComment>
+                        }
 
-                    {/*List Comments*/}
-                    <div key='list-comments' className='list-comments'>
-                        {this.props.commentsById &&
-                            this.props.allCommentsIds.map((id, index) => {
-                                return !this.props.commentsById[id].parentDeleted &&
-                                    this.props.commentsById[id].parentId === this.props.id &&
-                                    !this.props.commentsById[id].deleted &&
-                                    
+                        {/*List Comments*/}
+                        <div key='list-comments' className='list-comments'>
+                            {this.props.commentsById &&
+                                this.props.allCommentsIds.map((id, index) => {
+                                    return !this.props.commentsById[id].parentDeleted &&
+                                        this.props.commentsById[id].parentId === this.props.id &&
+                                        !this.props.commentsById[id].deleted &&
+
                                         <Comment key={index} comment={this.props.commentsById[id]} />
-                                   
-                            })
-                        }
+
+                                })
+                            }
+                        </div>
+
+                        {/*Sort Comments*/}
+                        <div className='sort-btn-div'>
+                            {
+                                this.props.allCommentsIds.length > 1 &&
+                                this.state.commentsEnabled &&
+                                this.props.postsById[this.props.id] &&
+                                <button onClick={() => {
+                                    this.props.saveSortedCommentsIds({ allIds: this.sortItemsBy('voteScore'), commentsSortedBy: 'voteScore' });
+                                }}>Sort by votes</button>
+                            }
+                        </div>
                     </div>
 
-                    {/*Sort Comments*/}
-                    <div className='sort-btn-div'>
-                        {
-                            this.props.allCommentsIds.length > 1 &&
-                            this.state.commentsEnabled &&
-                            this.props.postsById[this.props.id] &&
-                            <button onClick={() => {
-                                this.props.saveSortedCommentsIds({ allIds: this.sortItemsBy('voteScore'), commentsSortedBy: 'voteScore' });
-                            }}>Sort by votes</button>
-                        }
-                    </div>
                 </div>
-
-            </div>
-        )
+            )} else {
+                return <NotFound />;
+            }
     }
 }
 
@@ -98,7 +114,8 @@ function mapDispatchToProps(dispatch) {
     return {
         saveSortedCommentsIds: (data) => dispatch(saveSortedCommentsIds(data)),
         createComment: (data) => dispatch(createComment(data)),
-        fetchComments: (postId) => dispatch(fetchComments(postId))
+        fetchComments: (postId) => dispatch(fetchComments(postId)),
+        flagPostToDeleted: (postId) => dispatch(flagPostToDeleted(postId))
     }
 }
 

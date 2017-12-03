@@ -8,13 +8,7 @@ import {
     fetchPosts
 } from '../actions';
 
-import CreatePost from './CreatePost';
-import EditPost from './EditPost';
-import EditComment from './EditComment';
-import Category from './Category';
-import SinglePost from './SinglePost';
 import HomePageListTemplate from './HomePageListTemplate';
-
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 
@@ -60,47 +54,30 @@ class App extends Component {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className='root-posts'>
                             <h4 className='header-main'>All Posts</h4>
                             <HomePageListTemplate key='template-posts' type='post' items={this.props.allPostsId} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
                             <div className='sort-btn-wrapper'>
                                 <button className='btn btn-default' onClick={() => {
-                                        let option = this.props.sortedBy === 'voteScore' 
-                                        ? 'timestamp' 
+                                    let option = this.props.sortedBy === 'voteScore'
+                                        ? 'timestamp'
                                         : 'voteScore';
-                                        this.props.saveSortedPostsIds({ allIds: this.sortItemsBy(option), sortedBy: option });
-                                        }
-                                    }>
+                                    this.props.saveSortedPostsIds({ allIds: this.sortItemsBy(option), sortedBy: option });
+                                }
+                                }>
                                     <i className='glyphicon glyphicon-sort'></i>
                                     Sort
                                 </button>
-                                <div className='sort-info'>Sorted by: { 
-                                    this.props.sortedBy === 'voteScore' 
-                                    ? 'Votes' 
-                                    : 'Date' }
+                                <div className='sort-info'>Sorted by: {
+                                    this.props.sortedBy === 'voteScore'
+                                        ? 'Votes'
+                                        : 'Date'}
                                 </div>
                             </div>
                         </div>
                     </div>
                 )} />
-                <div>
-                    <Route exact path='/:category' render={(props) => (
-                        <Category name={props.match.params.category} />
-                    )} />
-                    <Route exact path='/posts/createpost' render={() => (
-                        <CreatePost />
-                    )} />
-                    <Route exact path='/editpost/:postid' render={(props) => (
-                        <EditPost postId={props.match.params.postid} />
-                    )} />
-                    <Route exact path="/:category/:id" render={(props) => (
-                        <SinglePost id={props.match.params.id} />
-                    )} />
-                    <Route exact path="/comments/:id" render={(props) => (
-                        <EditComment id={props.match.params.id} />
-                    )} />
-                </div>
             </div>
         );
     }
