@@ -40,7 +40,6 @@ class HomePageListTemplate extends Component {
                                 <Link className='text-uppercase' key={`list-${item}`} to={`/${this.props.byId[item].category}/` + item}>
                                     {this.props.byId[item].title}
                                 </Link>
-
                                 {/* VoteScore */}
                                 <span key={`span-${item}`} className="badge badge-default badge-pill">
                                     {
@@ -49,6 +48,10 @@ class HomePageListTemplate extends Component {
                                             : moment(this.props.byId[item].timestamp).format('DD/MM/YYYY')
                                     }
                                 </span>
+                                {/* Author */}
+                                <div>
+                                   - Author: {this.props.byId[item].author} -
+                                </div>
                                 <div className='post-settings'>
                                     {/* Delete */}
                                     <button onClick={() => (this.props.flagPostToDeleted(item))} className='remove-btn'>delete</button>

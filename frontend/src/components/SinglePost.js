@@ -51,7 +51,6 @@ class SinglePost extends Component {
     }
 
     render() {
-        this.props.postsById[this.props.id] && console.log(this.props.postsById[this.props.id])
         if (this.state.postDeleted) {
             return <Redirect to='/' />
         } else if (this.props.postsById[this.props.id] &&
