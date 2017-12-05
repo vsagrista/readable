@@ -17,16 +17,20 @@ class SinglePost extends Component {
         super();
         this.state = {
             commentsEnabled: false,
-            postDeleted: false
+            postDeleted: false,
+            postFetchedIsDeleted: false
         }
     }
 
     componentDidMount() {
-        this.props.fetchComments(this.props.id).then(() =>
+        this.props.fetchComments(this.props.id).then(() => {
+            let isPostDeleted = typeof this.props.postsById[this.props.id] === 'undefined';
             this.setState({
-                commentsEnabled: this.commentsAreEnabled()
+                commentsEnabled: this.commentsAreEnabled(),
+                postFetchedIsDeleted: isPostDeleted
             })
-        );
+        })
+
     }
 
     deletePost = (postId) => {
@@ -52,11 +56,11 @@ class SinglePost extends Component {
             return <Redirect to='/' />
         } else if (this.props.postsById[this.props.id] &&
             !this.props.postsById[this.props.id].deleted) {
-                return (
+            return (
                 <div className='container-fluid'>
-                {/*List Post*/}
+                    {/*List Post*/}
                     <Post post={this.props.postsById[this.props.id]} singlePostView='true'></Post>
-                {/* Delete */}
+                    {/* Delete */}
                     <button onClick={() => (this.deletePost(this.props.id))} className='remove-btn'>delete</button>
                     <div>
 
@@ -94,9 +98,12 @@ class SinglePost extends Component {
                     </div>
 
                 </div>
-            )} else {
-                return <NotFound />;
-            }
+            )
+        } else if (this.state.postFetchedIsDeleted) {
+            return <NotFound />;
+        } else {
+            return <div>Loading...</div>
+        }
     }
 }
 
