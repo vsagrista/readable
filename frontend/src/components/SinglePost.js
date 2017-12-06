@@ -6,6 +6,7 @@ import Comment from './Comment';
 import Post from './Post';
 import CreateComment from './CreateComment';
 import NotFound from './NotFound';
+import HomePageListTemplate from './HomePageListTemplate';
 import * as HelperMethods from '../helpers/HelperMethods';
 import { Redirect } from 'react-router'
 
@@ -64,7 +65,7 @@ class SinglePost extends Component {
                     <div>
 
                         {/*Create Comment*/}
-                        Comment count: { this.props.postsById[this.props.id] && this.props.postsById[this.props.id].commentCount}
+                        Comment count: {this.props.postsById[this.props.id] && this.props.postsById[this.props.id].commentCount}
                         {this.props.postsById[this.props.id] &&
                             !this.props.postsById[this.props.id].deleted &&
                             <CreateComment parentId={this.props.id} postDeleted={this.props.postDeleted}></CreateComment>
@@ -95,7 +96,20 @@ class SinglePost extends Component {
                             }
                         </div>
                     </div>
-
+                    {
+                    this.props.categories && 
+                        <div className='root-categories'>
+                            
+                                <h4 className='header-main'>All other categories</h4>
+                                <HomePageListTemplate key='template-categories' type='category' items={this.props.categories} allIds={this.props.allPostsId} byId={this.props.postsById}></HomePageListTemplate>
+                                <div className='sort-btn-wrapper'>
+                                    <div className='sort-info'>
+                                        Posts
+                                        </div>
+                                </div>
+                        
+                        </div>
+                    }
                 </div>
             )
         } else if (this.state.postFetchedIsDeleted) {
@@ -106,13 +120,15 @@ class SinglePost extends Component {
     }
 }
 
-function mapStateToProps({ comments, posts }) {
+function mapStateToProps({ comments, posts, categories }) {
     return {
         commentsById: comments.byId,
         allCommentsIds: comments.allIds,
         postsSortedBy: posts.sortedBy,
         postsById: posts.byId,
-        commentsSortedById: comments.sortedBy
+        allPostsId: posts.allIds,
+        commentsSortedById: comments.sortedBy,
+        categories: categories.names,
     }
 }
 

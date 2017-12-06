@@ -14,6 +14,7 @@ class HomePageListTemplate extends Component {
         this.props.votePost(id, option);
     }
 
+
     render() {
         return (
                 <ul key={`list-${this.props.type}`} className='list-group'>
