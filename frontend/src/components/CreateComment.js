@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { connect } from 'react-redux';
-import { createComment } from '../actions';
+import { createComment, fetchPosts, fetchComments } from '../actions';
 const uuidv1 = require('uuid/v1');
 
 class CreateComment extends Component {
@@ -44,7 +44,9 @@ class CreateComment extends Component {
 
     saveComment = (e) => {
         e.preventDefault();
-        this.props.createComment(this.state.newComment);
+        this.props.createComment(this.state.newComment).then(() => {
+            this.props.fetchPosts().then(() => this.props.fetchComments());    
+        })
         this.resetForm();
     }
 
@@ -86,7 +88,9 @@ function mapStateToProps({ categories, comments }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        createComment: (data) => dispatch(createComment(data))
+        createComment: (data) => dispatch(createComment(data)),
+        fetchPosts: () => dispatch(fetchPosts()),
+        fetchComments: () => dispatch(fetchComments())
     }
 }
 

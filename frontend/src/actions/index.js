@@ -35,9 +35,38 @@ export function fetchComments(postId) {
     return (dispatch, getState) => {
         return APIMethods.getComments(postId).then((data) => {
             data.map(comment => {
-                let state = getState()
+                let state = getState();
                 if (!state.comments.allIds.includes(comment.id)) {
                     dispatch(saveComment(comment))
+                }
+                return true;
+            })
+        })
+    }
+}
+
+export function flagCommentDeleted(commentId, parentId) {
+    return (dispatch, getState) => {
+        APIMethods.flagCommentDeleted(commentId).then((commentFlaggedRemoved) => {
+            dispatch(removeComment(commentFlaggedRemoved.id));
+            let state = getState();
+            let updatedPost = state.posts.byId[parentId];
+            let commentCount = updatedPost.commentCount === 0 ? 0 : updatedPost.commentCount - 1;
+            updatedPost = { ...updatedPost, commentCount: commentCount }
+            dispatch(updatePost(updatedPost));
+        })
+    }
+}
+
+export function fetchPosts() {
+    return (dispatch, getState) => {
+        return APIMethods.getPosts().then((data) => {
+            data.map(post => {
+                let state = getState()
+                if (!state.posts.allIds.includes(post.id)) {
+                    dispatch(savePost(post))
+                } else {
+                    dispatch(updatePost(post))
                 }
                 return true;
             })
@@ -60,7 +89,6 @@ export function createComment(comment) {
     return (dispatch) => {
         return APIMethods.createComment(newComment)
             .then((newComment) => {
-                console.log('Saving comment', newComment)
                 dispatch(saveComment(newComment))
             });
     }
@@ -96,14 +124,12 @@ export function createPost(post) {
     return (dispatch) => {
         return APIMethods.createPost(newPost)
             .then((newPost) => {
-                console.log('Saving post', newPost)
                 dispatch(savePost(newPost))
             })
     }
 }
 
-
-export function savePost({ id, timestamp, title, body, author, category, voteScore, deleted }) {
+export function savePost({ id, timestamp, title, body, author, category, voteScore, deleted, commentCount }) {
     return {
         type: CREATE_POST,
         id,
@@ -114,16 +140,7 @@ export function savePost({ id, timestamp, title, body, author, category, voteSco
         category,
         voteScore,
         deleted,
-    }
-}
-
-export function fetchPosts() {
-    return (dispatch) => {
-        return APIMethods.getPosts().then((data) => {
-            data.map(post => (
-                dispatch(savePost(post))
-            ))
-        })
+        commentCount
     }
 }
 
@@ -175,7 +192,6 @@ export function updateComment(comment) {
     return (dispatch) => {
         console.log(comment.id, comment)
         APIMethods.updateComment(comment.id, comment).then((data) => {
-            console.log("Comment edited: ", data);
             dispatch(saveUpdatedComment(data))
         })
     }
@@ -200,7 +216,7 @@ export function updatePost(post) {
     }
 }
 
-export function saveUpdatedPost({ id, timestamp, title, body, author, category, voteScore, deleted }) {
+export function saveUpdatedPost({ id, timestamp, title, body, author, category, voteScore, deleted, commentCount }) {
     return {
         type: UPDATE_POST,
         id,
@@ -211,6 +227,7 @@ export function saveUpdatedPost({ id, timestamp, title, body, author, category, 
         category,
         voteScore,
         deleted,
+        commentCount
     }
 }
 
@@ -227,13 +244,6 @@ export function removePost(id) {
         id,
     }
 }
-
-export function flagCommentDeleted(commentId) {
-    return (dispatch) => {
-        APIMethods.flagCommentDeleted(commentId).then((commentFlaggedRemoved) => dispatch(removeComment(commentFlaggedRemoved.id)))
-    }
-}
-
 
 export function removeComment(id) {
     return {

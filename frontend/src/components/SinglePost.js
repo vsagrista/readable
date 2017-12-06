@@ -64,6 +64,7 @@ class SinglePost extends Component {
                     <div>
 
                         {/*Create Comment*/}
+                        Comment count: { this.props.postsById[this.props.id] && this.props.postsById[this.props.id].commentCount}
                         {this.props.postsById[this.props.id] &&
                             !this.props.postsById[this.props.id].deleted &&
                             <CreateComment parentId={this.props.id} postDeleted={this.props.postDeleted}></CreateComment>
@@ -86,9 +87,8 @@ class SinglePost extends Component {
                         {/*Sort Comments*/}
                         <div className='sort-btn-div'>
                             {
-                                this.props.allCommentsIds.length > 1 &&
-                                this.state.commentsEnabled &&
                                 this.props.postsById[this.props.id] &&
+                                this.props.postsById[this.props.id].commentCount > 1 &&
                                 <button onClick={() => {
                                     this.props.saveSortedCommentsIds({ allIds: this.sortItemsBy('voteScore'), commentsSortedBy: 'voteScore' });
                                 }}>Sort by votes</button>

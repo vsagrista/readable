@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { flagCommentDeleted, voteComment } from '../actions';
+import { flagCommentDeleted, voteComment, fetchPosts, fetchComments } from '../actions';
 import * as HelperMethods from '../helpers/HelperMethods';
 
 var moment = require('moment');
@@ -17,6 +17,12 @@ class Comment extends Component {
         e.preventDefault();
         this.props.voteComment(id, option);
         this.sortItemsBy(this.props.commentsSortedBy);
+    }
+
+    deleteComment = (commentId, parentId) => {
+        
+        this.props.flagCommentDeleted(commentId, this.props.comment.parentId)
+        this.props.fetchPosts().then(() => this.props.fetchComments());   
     }
 
     render() {
@@ -51,7 +57,7 @@ class Comment extends Component {
                         }
                         } className='btn btn-default'><i className='glyphicon glyphicon-thumbs-down'></i></button>
                         <button title='remove' onClick={(e) => {
-                            this.props.flagCommentDeleted(this.props.comment.id)
+                            this.deleteComment(this.props.comment.id, this.props.comment.parentId)
                         }} className='btn btn-danger'>X</button>
                 </ul>
                 <hr></hr>
@@ -72,7 +78,9 @@ function mapStateToProps({ comments }) {
 function mapDispatchToProps(dispatch) {
     return {
         voteComment: (id, option) => dispatch(voteComment(id, option)),
-        flagCommentDeleted: (data) => dispatch(flagCommentDeleted(data))
+        flagCommentDeleted: (commentId, parentId) => dispatch(flagCommentDeleted(commentId, parentId)),
+        fetchPosts: () => dispatch(fetchPosts()),
+        fetchComments: () => dispatch(fetchComments())
     }
 }
 

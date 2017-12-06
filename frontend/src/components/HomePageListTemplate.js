@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { flagPostToDeleted, votePost } from '../actions';
+import { flagPostToDeleted, votePost, fetchComments } from '../actions';
 import * as HelperMethods from '../helpers/HelperMethods';
 var moment = require('moment');
 
@@ -50,7 +50,9 @@ class HomePageListTemplate extends Component {
                                 </span>
                                 {/* Author */}
                                 <div>
-                                   - Author: {this.props.byId[item].author} -
+                                   - Author: {this.props.byId[item].author} - Comment count: {this.props.byId[item].commentCount}
+                                   
+                                   
                                 </div>
                                 <div className='post-settings'>
                                     {/* Delete */}
@@ -75,16 +77,19 @@ class HomePageListTemplate extends Component {
     }
 }
 
-function mapStateToProps({ posts }) {
+function mapStateToProps({ posts, comments }) {
     return {
-        sortedBy: posts.sortedBy
+        sortedBy: posts.sortedBy,
+        commentsById: comments.byId,
+        allCommentsIds: comments.allIds
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         flagPostToDeleted: (postId) => dispatch(flagPostToDeleted(postId)),
-        votePost: (id, option) => dispatch(votePost(id, option))
+        votePost: (id, option) => dispatch(votePost(id, option)),
+        fetchComments: (postId) => dispatch(fetchComments(postId))
     }
 }
 
