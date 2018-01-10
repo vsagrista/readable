@@ -15,6 +15,7 @@ import { Redirect } from 'react-router'
 class SinglePost extends Component {
 
     constructor() {
+        console.log("on singlepost")
         super();
         this.state = {
             commentsEnabled: false,
@@ -112,10 +113,12 @@ class SinglePost extends Component {
                     }
                 </div>
             )
-        } else if (this.state.postFetchedIsDeleted) {
+        } else if (this.state.postFetchedIsDeleted && this.props.postsById[this.props.id]) {
             return <NotFound />;
-        } else {
+        } else if(this.props.postsById[this.props.id]){
             return <div>Loading...</div>
+        } else {
+            return <div></div>
         }
     }
 }
